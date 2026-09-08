@@ -40,7 +40,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 
 <style>
 .blog-page {
-  background: #f7f6f4;
+  background: #ffffff;
   min-height: 100vh;
   padding: 3.4rem 0 4.6rem;
 }
@@ -51,7 +51,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   letter-spacing: 0.2em;
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--brand-primary, #ff4d10);
+  color: var(--brand-primary, #f15b30);
 }
 
 h1 {
@@ -73,8 +73,8 @@ h1 {
   text-decoration: none;
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid #e9d8c2;
-  background: #fffdf9;
+  border: 1px solid #e6e6e6;
+  background: #ffffff;
   box-shadow: 0 14px 28px rgba(49, 31, 21, 0.08);
   transition: transform 200ms ease, box-shadow 200ms ease;
 }
@@ -101,7 +101,7 @@ h1 {
   letter-spacing: 0.08em;
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--brand-primary, #ff4d10);
+  color: var(--brand-primary, #f15b30);
 }
 
 .post-body h2 {

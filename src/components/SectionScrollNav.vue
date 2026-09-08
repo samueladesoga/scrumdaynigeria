@@ -1,7 +1,7 @@
 <template>
   <nav class="scroll-nav" :class="{ 'is-visible': isVisible }" aria-label="Section quick navigation">
     <a href="#top" class="logo-pill" aria-label="Back to top">
-      <img class="logo-image" src="/brand-mark.svg" alt="Scrum Day Nigeria" />
+      <img class="logo-image" src="/brand-icon.png" alt="Scrum Day Nigeria" />
     </a>
     <a v-for="item in nav" :key="item.href" :href="item.href" class="nav-pill">{{ item.label }}</a>
     <a :href="ticketUrl" class="nav-pill nav-pill-cta">Tickets</a>
@@ -112,7 +112,7 @@ onBeforeUnmount(() => {
 
 .nav-pill-cta {
   margin-left: auto;
-  background: var(--brand-primary, #ff4d10);
+  background: var(--brand-primary, #f15b30);
   color: #fff;
 }
 

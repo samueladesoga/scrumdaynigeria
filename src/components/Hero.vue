@@ -5,7 +5,7 @@
     <div class="hero-grid-atmosphere" ref="gridOverlayRef" aria-hidden="true"></div>
 
     <div class="hero-top container" ref="heroTopRef">
-      <img class="hero-logo" src="/brand-mark.svg" alt="Scrum Day Nigeria logo" />
+      <img class="hero-logo" src="/brand-icon.png" alt="Scrum Day Nigeria logo" />
       <p class="hero-date">{{ displayDate }} &middot; {{ venueName }}, {{ venueAddress }}</p>
       <h1 class="hero-title" ref="titleRef">Scrum Day<br />Nigeria</h1>
       <p class="hero-copy">{{ theme }}. {{ tagline }}.</p>
@@ -173,7 +173,7 @@ onMounted(() => {
   top: 8%;
   width: min(760px, 68vw);
   height: min(760px, 68vw);
-  background: radial-gradient(circle at 44% 42%, rgba(255, 77, 16, 0.18) 0%, rgba(255, 77, 16, 0.1) 34%, rgba(255, 77, 16, 0) 72%);
+  background: radial-gradient(circle at 44% 42%, rgba(241, 91, 48, 0.18) 0%, rgba(241, 91, 48, 0.1) 34%, rgba(241, 91, 48, 0) 72%);
   animation: hero-radial-drift-a 36s ease-in-out infinite alternate;
 }
 
@@ -182,7 +182,7 @@ onMounted(() => {
   top: 24%;
   width: min(680px, 60vw);
   height: min(680px, 60vw);
-  background: radial-gradient(circle at 56% 48%, rgba(20, 35, 47, 0.12) 0%, rgba(20, 35, 47, 0.08) 36%, rgba(20, 35, 47, 0) 74%);
+  background: radial-gradient(circle at 56% 48%, rgba(14, 73, 79, 0.14) 0%, rgba(14, 73, 79, 0.09) 36%, rgba(14, 73, 79, 0) 74%);
   animation: hero-radial-drift-b 28s ease-in-out infinite alternate;
 }
 
@@ -296,12 +296,12 @@ onMounted(() => {
 }
 
 .cta-primary {
-  background: var(--brand-primary, #fc4d0f);
+  background: var(--brand-primary, #f15b30);
   color: #fff;
 }
 
 .cta-dark {
-  background: #20272b;
+  background: var(--brand-teal, #0e494f);
   color: #fff;
 }
 

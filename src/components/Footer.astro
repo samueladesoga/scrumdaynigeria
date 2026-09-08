@@ -88,7 +88,7 @@ const year = new Date().getFullYear();
 <style>
 .site-footer {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
-  background: #111616;
+  background: var(--brand-teal-deep, #082f33);
   color: #eef1f2;
 }
 
@@ -101,7 +101,7 @@ const year = new Date().getFullYear();
   grid-template-columns: minmax(290px, 0.95fr) minmax(0, 1.55fr);
   gap: 1.5rem;
   align-items: center;
-  background: #f8f8f8;
+  background: #ffffff;
   color: #232a2f;
   border-radius: 26px;
   padding: 1.4rem 1.45rem 1.25rem;
@@ -118,7 +118,7 @@ const year = new Date().getFullYear();
   width: 46px;
   height: 46px;
   border-radius: 999px;
-  background: #232a2f;
+  background: var(--brand-teal, #0e494f);
   display: grid;
   place-items: center;
   flex: none;
@@ -188,8 +188,8 @@ const year = new Date().getFullYear();
 }
 
 .signup-field input:focus {
-  outline: 2px solid rgba(255, 77, 16, 0.22);
-  border-color: var(--brand-primary, #ff4d10);
+  outline: 2px solid rgba(241, 91, 48, 0.22);
+  border-color: var(--brand-primary, #f15b30);
 }
 
 .signup-field-wide input {
@@ -218,20 +218,20 @@ const year = new Date().getFullYear();
   width: 18px;
   height: 18px;
   margin: 0;
-  accent-color: var(--brand-primary, #ff4d10);
+  accent-color: var(--brand-primary, #f15b30);
 }
 
 .signup-submit {
   border: 0;
   border-radius: 999px;
-  background: var(--brand-primary, #ff4d10);
+  background: var(--brand-primary, #f15b30);
   color: #fff;
   min-height: 46px;
   padding: 0.72rem 1.25rem;
   font: inherit;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 8px 18px rgba(255, 77, 16, 0.24);
+  box-shadow: 0 8px 18px rgba(241, 91, 48, 0.24);
 }
 
 .footer-grid {

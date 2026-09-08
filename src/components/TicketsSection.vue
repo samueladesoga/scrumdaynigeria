@@ -84,7 +84,7 @@ const activeCategory = computed(() => categories.value[activeCategoryIndex.value
 
 <style scoped>
 .tickets-section {
-  background: #1e2223;
+  background: #082f33;
   padding: 3rem 0 4.5rem;
   color: #eef1f2;
 }
@@ -119,7 +119,7 @@ const activeCategory = computed(() => categories.value[activeCategoryIndex.value
   gap: 0.25rem;
   padding: 0.28rem;
   border-radius: 999px;
-  background: #303537;
+  background: #123f44;
 }
 
 .ticket-tab {
@@ -135,7 +135,7 @@ const activeCategory = computed(() => categories.value[activeCategoryIndex.value
 }
 
 .ticket-tab.active {
-  background: var(--brand-primary, #ff4d10);
+  background: var(--brand-primary, #f15b30);
   color: #fff;
 }
 
@@ -164,7 +164,7 @@ const activeCategory = computed(() => categories.value[activeCategoryIndex.value
   left: 50%;
   width: 38px;
   height: 24px;
-  background: #1e2223;
+  background: #082f33;
   transform: translateX(-50%);
   pointer-events: none;
 }
@@ -199,8 +199,8 @@ const activeCategory = computed(() => categories.value[activeCategoryIndex.value
   margin: 0;
   padding: 0.22rem 0.45rem;
   border-radius: 999px;
-  background: #d8f0ce;
-  color: #4f8a3d;
+  background: var(--brand-lime, #d1e27e);
+  color: #1f3d1c;
   font-size: 0.76rem;
   font-weight: 800;
   white-space: nowrap;
@@ -273,7 +273,7 @@ const activeCategory = computed(() => categories.value[activeCategoryIndex.value
   width: 100%;
   min-height: 46px;
   border-radius: 999px;
-  background: var(--brand-primary, #ff4d10);
+  background: var(--brand-primary, #f15b30);
   color: #fff;
   text-decoration: none;
   font-weight: 800;

@@ -5,8 +5,14 @@ website build**: organizers (or an agent) edit Markdown/YAML files, and the site
 
 Visual design and UX are ported from the [artham-ai-summit](https://github.com/RaikarPravin/artham-ai-summit)
 template ([live demo](https://artham-ai.vercel.app/)) — same layout, animations, fonts (Bebas Neue
-+ Space Grotesk), and interaction patterns, restyled with Scrum Day Nigeria's orange/cream palette
-and wired to this repo's content collections instead of hardcoded data.
++ Space Grotesk), and interaction patterns, restyled with the real Scrum Day Nigeria brand and
+wired to this repo's content collections instead of hardcoded data.
+
+**Brand colors** (sampled from the logo, defined in `src/styles/global.css`): teal `#0e494f`
+(`--brand-teal`, dark "stage" sections), orange `#f15b30` (`--brand-primary`, CTAs/accents), lime
+`#d1e27e` (`--brand-lime`, small accent details). The site is predominantly white — dark teal is
+reserved for a handful of contrast sections (program cards, partners/video showcase, tickets,
+footer), mirroring the reference template's light/dark rhythm.
 
 ## Stack
 
@@ -73,7 +79,8 @@ extra config needed.
   seeded with placeholder copy/images — fill in with real 2026 details.
 - `src/components/Hero.vue`: the photo marquee (`marqueeImages`) hotlinks generic Pexels stock
   photos — swap for real Scrum Day Nigeria event photography.
-- `public/brand-mark.svg` / `src/assets/placeholders/*`: generic placeholder logo mark and image
-  stand-ins — replace with the real Scrum Day Nigeria logo and photography.
+- `src/assets/placeholders/*`: generic teal/lime placeholder stand-ins for speaker headshots,
+  partner logos, and cover images — replace with real photography/logos as they come in. The
+  real logo is already wired up (`public/brand-icon.png`, `public/brand-lockup.png`, favicon).
 - The footer newsletter signup form has no backend wired up (matching the reference template) —
   connect it to a real email service (Mailchimp, ConvertKit, etc.) before relying on it.
