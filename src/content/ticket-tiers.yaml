@@ -14,3 +14,17 @@
   priceNote: "Price to be announced"
   price: "TBD"
   ctaLabel: "Buy Ticket"
+
+- id: hackathon
+  order: 2
+  category: hackathon
+  categoryLabel: "Hackathon"
+  
+  dates: "24 MAR"
+  badge: "TBD"
+  title: "Hackathon Ticket"
+  description: "Full access to the Hackathon."
+  priceLabel: "Standard"
+  priceNote: "Price to be announced"
+  price: "TBD"
+  ctaLabel: "Buy Ticket"

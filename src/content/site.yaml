@@ -13,7 +13,7 @@ config:
 
   metrics:
     days: "1"
-    expectedParticipants: "200+"
+    expectedParticipants: "500+"
     speakers: "15+"
 
   preEvent:
