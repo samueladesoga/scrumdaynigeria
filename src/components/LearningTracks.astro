@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+
+const tracks = (await getCollection('learningTracks')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="tracks" class="mx-auto max-w-6xl px-6 py-20">
+  <div class="max-w-2xl">
+    <p class="text-sm font-semibold uppercase tracking-[0.3em] text-accent">This Year's Theme</p>
+    <h2 class="mt-3 text-3xl font-bold text-ink sm:text-4xl">Six tracks, one question</h2>
+    <p class="mt-4 text-lg text-ink-muted">
+      How do we keep flow and value at the center of product delivery as agentic systems join the team?
+    </p>
+  </div>
+
+  <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {tracks.map((track) => (
+      <div class="rounded-2xl border border-border bg-bg-card p-6">
+        <h3 class="text-lg font-semibold text-ink">{track.data.title}</h3>
+        <p class="mt-2 text-sm leading-relaxed text-ink-muted">{track.data.description}</p>
+      </div>
+    ))}
+  </div>
+</section>

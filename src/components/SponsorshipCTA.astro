@@ -1,0 +1,31 @@
+---
+interface Props {
+  contactEmail: string;
+}
+
+const { contactEmail } = Astro.props;
+
+const benefits = [
+  'Direct access to Nigeria\'s product, engineering, and agile community',
+  'Brand positioning alongside a premium, practitioner-led event',
+  'Visibility across the website, event materials, and social channels',
+];
+---
+
+<section class="mx-auto max-w-4xl px-6 py-20">
+  <div class="rounded-3xl border border-border bg-bg-card p-10 text-center">
+    <p class="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Partner With Us</p>
+    <h2 class="mt-3 text-3xl font-bold text-ink sm:text-4xl">Become a partner or sponsor</h2>
+    <ul class="mx-auto mt-6 max-w-md space-y-2 text-left text-ink-muted">
+      {benefits.map((b) => (
+        <li class="flex gap-2"><span class="text-accent">&#10003;</span>{b}</li>
+      ))}
+    </ul>
+    <a
+      href={`mailto:${contactEmail}?subject=Partnership%20Enquiry`}
+      class="mt-8 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+    >
+      Get in Touch
+    </a>
+  </div>
+</section>

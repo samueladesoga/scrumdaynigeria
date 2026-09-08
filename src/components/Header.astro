@@ -1,0 +1,37 @@
+---
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  nav: NavItem[];
+  eventName: string;
+  ticketUrl: string;
+}
+
+const { nav, eventName, ticketUrl } = Astro.props;
+---
+
+<header class="sticky top-0 z-50 border-b border-border/80 bg-bg/90 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href="/" class="text-lg font-bold tracking-tight text-ink">
+      {eventName}
+    </a>
+
+    <nav class="hidden items-center gap-8 text-sm font-medium text-ink-muted md:flex">
+      {nav.map((item) => (
+        <a href={item.href} class="transition-colors hover:text-ink">
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <a
+      href={ticketUrl}
+      class="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+    >
+      Buy Ticket
+    </a>
+  </div>
+</header>

@@ -1,0 +1,8 @@
+# Past editions. `coverImage` is optional — add a path (e.g. ./2025/cover.jpg)
+# once photos are available and place the file alongside this yaml.
+
+- id: "2025"
+  year: 2025
+  title: "Scrum Day Nigeria 2025"
+  summary: "Our most successful edition yet, bringing together 150+ practitioners, coaches, and leaders to explore optimising flow for faster value delivery."
+  attendeeCount: "150+"

@@ -1,0 +1,49 @@
+# Single "config" entry (the file loader keys a top-level object by these keys).
+config:
+  eventName: Scrum Day Nigeria 2026
+  theme: "Flow and Value in an Agentic Enterprise"
+  tagline: "Building Better Products — Sooner, Safer, Happier"
+  eventDate: 2026-03-24
+  displayDate: "24th March, 2026"
+  displayTime: "9am - 5pm"
+  venueName: "Lagos Oriental Hotel"
+  venueAddress: "Victoria Island, Lagos"
+  ticketUrl: "https://scrumday.ng/tickets" # TODO: replace with real Paystack/ticket link
+  contactEmail: "info@scrumday.ng"
+
+  metrics:
+    days: "1"
+    expectedParticipants: "200+"
+    speakers: "15+"
+
+  preEvent:
+    date: 2026-03-23
+    displayDate: "23rd March, 2026"
+    title: "Pre-Event Mixer"
+    description: "An informal evening to connect with speakers and fellow attendees ahead of the main conference."
+
+  whoShouldAttend:
+    - Product Managers
+    - Scrum Masters & Agile Coaches
+    - Software Engineers
+    - Product Designers
+    - Engineering & Product Leaders
+    - Anyone building AI-enabled products and teams
+
+  social: # TODO: confirm real handles — these are placeholders
+    instagram: "https://instagram.com/scrumdayng"
+    linkedin: "https://linkedin.com/company/scrumdaynigeria"
+
+  nav:
+    - label: Home
+      href: /
+    - label: About
+      href: /#about
+    - label: Schedule
+      href: /schedule
+    - label: Speakers
+      href: /speakers
+    - label: Blog
+      href: /blog
+    - label: Contact
+      href: /#contact

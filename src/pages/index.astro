@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Metrics from '../components/Metrics.astro';
+import About from '../components/About.astro';
+import LearningTracks from '../components/LearningTracks.astro';
+import Speakers from '../components/Speakers.astro';
+import Agenda from '../components/Agenda.astro';
+import WhoShouldAttend from '../components/WhoShouldAttend.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Partners from '../components/Partners.astro';
+import SponsorshipCTA from '../components/SponsorshipCTA.astro';
+import { getEntry } from 'astro:content';
+
+const site = await getEntry('site', 'config');
+if (!site) throw new Error('Missing site config entry (src/content/site.yaml)');
+const { data } = site;
+---
+
+<Layout>
+  <main>
+    <Hero
+      eventName={data.eventName}
+      theme={data.theme}
+      tagline={data.tagline}
+      displayDate={data.displayDate}
+      displayTime={data.displayTime}
+      venueName={data.venueName}
+      venueAddress={data.venueAddress}
+      ticketUrl={data.ticketUrl}
+    />
+    <Metrics metrics={data.metrics} />
+    <About eventName={data.eventName} />
+    <LearningTracks />
+    <Speakers limit={4} showViewAll />
+    <Agenda showViewAll />
+    <WhoShouldAttend items={data.whoShouldAttend} />
+    <Testimonials />
+    <Partners />
+    <SponsorshipCTA contactEmail={data.contactEmail} />
+  </main>
+</Layout>

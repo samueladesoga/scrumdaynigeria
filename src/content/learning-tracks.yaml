@@ -1,0 +1,32 @@
+# Learning tracks for the "Flow and Value in an Agentic Enterprise" theme.
+# Each track can be referenced from agenda.yaml and speakers via its `id`.
+
+- id: agentic-flow
+  order: 1
+  title: "Agentic Flow"
+  description: "Designing team and system flow when AI agents are part of the delivery pipeline, not just a tool on the side."
+
+- id: evidence-based-value
+  order: 2
+  title: "Evidence-Based Value Delivery"
+  description: "Using data and experimentation — human and agentic — to validate that what's shipped actually creates value."
+
+- id: quality-in-the-loop
+  order: 3
+  title: "Quality in the Loop"
+  description: "Maintaining quality and trust as agents take on more of the build, test, and review cycle."
+
+- id: risk-and-governance
+  order: 4
+  title: "Risk & Governance"
+  description: "Managing the risks — technical, ethical, and organizational — of putting autonomous agents into production workflows."
+
+- id: team-enablement
+  order: 5
+  title: "Team Enablement"
+  description: "Equipping Scrum Masters, coaches, and product teams to work effectively alongside agentic systems."
+
+- id: customer-discovery
+  order: 6
+  title: "Customer Discovery"
+  description: "Keeping product discovery human-centered even as agents accelerate research, synthesis, and delivery."

@@ -1,0 +1,43 @@
+# Conference agenda. Add/edit entries here — no code changes needed.
+# `speakerIds` reference the filename (without extension) of a file in src/content/speakers/.
+# `track` references an `id` from src/content/learning-tracks.yaml.
+#
+# NOTE: this is a placeholder skeleton for 2026 — replace times/titles once confirmed.
+
+- id: mixer-welcome
+  day: "2026-03-23"
+  dayLabel: "Pre-Event Mixer"
+  startTime: "18:00"
+  endTime: "20:00"
+  title: "Welcome Mixer"
+  description: "Informal evening to connect with speakers and fellow attendees ahead of the main conference."
+  type: mixer
+  speakerIds: []
+
+- id: registration
+  day: "2026-03-24"
+  dayLabel: "Main Conference Day"
+  startTime: "09:00"
+  endTime: "09:30"
+  title: "Registration & Welcome Coffee"
+  type: registration
+  speakerIds: []
+
+- id: opening-keynote
+  day: "2026-03-24"
+  dayLabel: "Main Conference Day"
+  startTime: "09:30"
+  endTime: "10:15"
+  title: "Opening Keynote: Flow and Value in an Agentic Enterprise"
+  description: "TODO: confirm keynote speaker and abstract."
+  type: keynote
+  speakerIds: []
+
+- id: closing-panel
+  day: "2026-03-24"
+  dayLabel: "Main Conference Day"
+  startTime: "16:00"
+  endTime: "17:00"
+  title: "Closing Panel: The Road Ahead for Agentic Teams"
+  type: panel
+  speakerIds: []

@@ -1,0 +1,21 @@
+---
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="mx-auto max-w-4xl px-6 py-20">
+  <p class="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Who Should Attend</p>
+  <h2 class="mt-3 text-3xl font-bold text-ink sm:text-4xl">Built for the whole product team</h2>
+
+  <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+    {items.map((item) => (
+      <li class="flex items-center gap-3 rounded-xl border border-border bg-bg-card px-5 py-4 text-ink-muted">
+        <span class="text-accent">&#10003;</span>
+        {item}
+      </li>
+    ))}
+  </ul>
+</section>

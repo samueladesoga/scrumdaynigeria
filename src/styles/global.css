@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-ink: #f4f1fa;
+  --color-ink-muted: #c9c1de;
+  --color-bg: #120b21;
+  --color-bg-raised: #1b1130;
+  --color-bg-card: #221739;
+  --color-accent: #8b6bf2;
+  --color-accent-soft: #4b3b78;
+  --color-border: #33254f;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
