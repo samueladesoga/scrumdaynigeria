@@ -37,13 +37,21 @@ config:
   nav:
     - label: Home
       href: /
-    - label: About
-      href: /#about
     - label: Schedule
       href: /schedule
     - label: Speakers
       href: /speakers
+    - label: Partners
+      href: /#partners
     - label: Blog
       href: /blog
-    - label: Contact
-      href: /#contact
+
+  # Dummy placeholder video (Blender Foundation's open film "Big Buck Bunny") —
+  # swap for a real 2025 highlights reel, or delete this line to hide the video card.
+  highlightsVideoId: "aqz-KE-bpKQ"
+
+  ticketsIncluded:
+    - Full-day access
+    - Refreshments
+    - Materials
+    - Certificate of Attendance

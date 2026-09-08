@@ -1,10 +1,167 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Speakers from '../components/Speakers.astro';
+import Header from '../components/Header.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const site = await getEntry('site', 'config');
+const speakers = (await getCollection('speakers')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout title="Speakers">
-  <main class="pt-12">
-    <Speakers />
+<Layout title="All Speakers">
+  <Header nav={site!.data.nav} ticketUrl={site!.data.ticketUrl} />
+
+  <main class="speakers-page">
+    <section class="speakers-hero">
+      <div class="container speakers-hero-inner">
+        <p class="eyebrow">{site!.data.eventName}</p>
+        <h1>All Speakers</h1>
+        <p>
+          Explore the full lineup of product, engineering, and delivery leaders sharing real-world outcomes.
+        </p>
+      </div>
+    </section>
+
+    <section class="speakers-grid-section" aria-label="All event speakers">
+      <div class="container speakers-grid">
+        {speakers.map((speaker) => (
+          <article class="speaker-card">
+            <div class="speaker-photo">
+              <Image src={speaker.data.image} alt={speaker.data.name} width={500} height={540} loading="lazy" />
+            </div>
+            <div class="speaker-content">
+              <h2>{speaker.data.name}</h2>
+              <p class="speaker-role">{speaker.data.role}</p>
+              <p class="speaker-company">{speaker.data.company}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {speakers.length === 0 && (
+        <p class="container empty-note">No speakers announced yet — check back soon.</p>
+      )}
+    </section>
   </main>
 </Layout>
+
+<style>
+.speakers-page {
+  background: #f7f6f4;
+  min-height: 100vh;
+}
+
+.speakers-hero {
+  padding: 3.4rem 0 2.2rem;
+}
+
+.speakers-hero-inner {
+  width: min(1120px, 94%);
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #6a7278;
+}
+
+.speakers-hero h1 {
+  margin: 0.45rem 0 0;
+  font-size: clamp(2.3rem, 6vw, 4.5rem);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+  color: #1f2429;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+}
+
+.speakers-hero p {
+  margin: 0.95rem 0 0;
+  max-width: 55ch;
+  color: #343b41;
+  font-size: clamp(1rem, 1.25vw, 1.14rem);
+  line-height: 1.55;
+}
+
+.speakers-grid-section {
+  padding: 0 0 4.6rem;
+}
+
+.speakers-grid {
+  width: min(1120px, 94%);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.1rem;
+}
+
+.speaker-card {
+  border-radius: 14px;
+  border: 1px solid #dcdbe0;
+  background: #fcfcfc;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(19, 25, 38, 0.05);
+}
+
+.speaker-photo {
+  background: #e5e6ea;
+}
+
+.speaker-photo :global(img) {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.08;
+  object-fit: cover;
+}
+
+.speaker-content {
+  padding: 0.9rem;
+}
+
+.speaker-content h2 {
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.2;
+  color: #20242a;
+}
+
+.speaker-role {
+  margin: 0.38rem 0 0;
+  color: #3f464d;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.speaker-company {
+  margin: 0.52rem 0 0;
+  color: var(--brand-primary, #f04f15);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.empty-note {
+  color: #5b6167;
+  padding: 2rem 0;
+}
+
+@media (max-width: 1100px) {
+  .speakers-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .speakers-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .speakers-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+</style>

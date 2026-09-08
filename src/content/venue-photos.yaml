@@ -1,0 +1,12 @@
+# Full-bleed venue carousel photos. TODO: replace with real photos of Lagos
+# Oriental Hotel / past editions once available.
+
+- id: photo-1
+  order: 1
+  image: "../assets/placeholders/cover.svg"
+  alt: "Scrum Day Nigeria venue"
+
+- id: photo-2
+  order: 2
+  image: "../assets/placeholders/cover.svg"
+  alt: "Scrum Day Nigeria attendees"

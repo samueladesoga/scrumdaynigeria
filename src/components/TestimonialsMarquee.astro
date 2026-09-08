@@ -1,0 +1,227 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const testimonials = (await getCollection('testimonials')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(testimonials.map((t) => render(t)));
+const withContent = testimonials.map((t, i) => ({ entry: t, Content: rendered[i].Content }));
+
+const mid = Math.ceil(withContent.length / 2);
+const topRow = withContent.slice(0, mid);
+const bottomRow = withContent.slice(mid);
+---
+
+{testimonials.length > 0 && (
+  <section class="testimonials-section" aria-labelledby="testimonials-title">
+    <div class="testimonials-wrap">
+      <h2 id="testimonials-title" class="testimonials-title">What Past Attendees Said</h2>
+
+      <div class="marquee-row">
+        <div class="marquee-track marquee-track-forward">
+          {[...topRow, ...topRow].map(({ entry, Content }) => (
+            <article class="testimonial-card">
+              <p class="quote-mark" aria-hidden="true">&ldquo;</p>
+              <p class="quote"><Content /></p>
+
+              <div class="person-row">
+                {entry.data.image ? (
+                  <Image src={entry.data.image} alt={entry.data.name} width={68} height={68} />
+                ) : (
+                  <span class="avatar-fallback" aria-hidden="true">{entry.data.name.charAt(0)}</span>
+                )}
+                <div>
+                  <p class="name">{entry.data.name}</p>
+                  <p class="role">{entry.data.role}{entry.data.company ? `, ${entry.data.company}` : ''}</p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      {bottomRow.length > 0 && (
+        <div class="marquee-row">
+          <div class="marquee-track marquee-track-reverse">
+            {[...bottomRow, ...bottomRow].map(({ entry, Content }) => (
+              <article class="testimonial-card">
+                <p class="quote-mark" aria-hidden="true">&ldquo;</p>
+                <p class="quote"><Content /></p>
+
+                <div class="person-row">
+                  {entry.data.image ? (
+                    <Image src={entry.data.image} alt={entry.data.name} width={68} height={68} />
+                  ) : (
+                    <span class="avatar-fallback" aria-hidden="true">{entry.data.name.charAt(0)}</span>
+                  )}
+                  <div>
+                    <p class="name">{entry.data.name}</p>
+                    <p class="role">{entry.data.role}{entry.data.company ? `, ${entry.data.company}` : ''}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+)}
+
+<style>
+.testimonials-section {
+  background: #f2f3f5;
+  padding: 2.4rem 0 4.6rem;
+}
+
+.testimonials-wrap {
+  width: 100%;
+  display: grid;
+  gap: 1rem;
+}
+
+.testimonials-title {
+  margin: 0;
+  text-align: center;
+  color: #131a20;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  font-size: clamp(1.8rem, 3.2vw, 2.7rem);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+}
+
+.marquee-row {
+  position: relative;
+  overflow: hidden;
+  padding-inline: 0.8rem;
+}
+
+.marquee-row::before,
+.marquee-row::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 56px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marquee-row::before {
+  left: 0;
+  background: linear-gradient(90deg, #f2f3f5, rgba(242, 243, 245, 0));
+}
+
+.marquee-row::after {
+  right: 0;
+  background: linear-gradient(270deg, #f2f3f5, rgba(242, 243, 245, 0));
+}
+
+.marquee-track {
+  display: flex;
+  gap: 0.9rem;
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee-track-forward {
+  animation: testimonials-left 24s linear infinite;
+}
+
+.marquee-track-reverse {
+  animation: testimonials-left 24s linear infinite reverse;
+}
+
+.testimonial-card {
+  width: clamp(260px, 30vw, 410px);
+  min-height: 210px;
+  background: #eceef2;
+  border: 1px solid #e0e4ea;
+  border-radius: 14px;
+  padding: 1rem 1.05rem;
+  color: #161d24;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.quote-mark {
+  margin: 0;
+  color: var(--brand-primary, #ff4d10);
+  font-size: 2.8rem;
+  line-height: 1;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.quote {
+  margin: 0.2rem 0 0;
+  font-size: 1.03rem;
+  line-height: 1.42;
+  color: #222a31;
+}
+
+.person-row {
+  margin-top: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.person-row :global(img) {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.avatar-fallback {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #dcdfe6;
+  color: #3a4148;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  flex: none;
+}
+
+.name {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.role {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  color: #8a919a;
+}
+
+@keyframes testimonials-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 0.45rem)); }
+}
+
+@media (max-width: 720px) {
+  .testimonial-card {
+    width: clamp(238px, 74vw, 320px);
+    min-height: 200px;
+  }
+
+  .quote {
+    font-size: 0.97rem;
+  }
+
+  .marquee-track-forward,
+  .marquee-track-reverse {
+    animation-duration: 28s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track-forward,
+  .marquee-track-reverse {
+    animation: none;
+  }
+}
+</style>

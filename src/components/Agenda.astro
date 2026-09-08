@@ -24,33 +24,31 @@ for (const item of items) {
 }
 ---
 
-<section id="schedule" class="mx-auto max-w-4xl px-6 py-20">
-  <div class="flex flex-wrap items-end justify-between gap-4">
+<section id="schedule" class="agenda-section container">
+  <div class="agenda-head">
     <div>
-      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-accent">Schedule</p>
-      <h2 class="mt-3 text-3xl font-bold text-ink sm:text-4xl">Event Agenda</h2>
+      <p class="eyebrow">Schedule</p>
+      <h2>Event Agenda</h2>
     </div>
-    {showViewAll && (
-      <a href="/schedule" class="text-sm font-semibold text-accent hover:underline">Full schedule &rarr;</a>
-    )}
+    {showViewAll && <a href="/schedule" class="view-all">Full schedule &rarr;</a>}
   </div>
 
   {days.map((day) => {
     const dayItems = items.filter((item) => item.data.day === day);
     return (
-      <div class="mt-10">
-        <h3 class="text-lg font-semibold text-ink">{dayItems[0].data.dayLabel}</h3>
-        <ol class="mt-4 divide-y divide-border rounded-2xl border border-border bg-bg-card">
+      <div class="day-block">
+        <h3>{dayItems[0].data.dayLabel}</h3>
+        <ol class="agenda-list">
           {dayItems.map((item) => (
-            <li class="flex flex-col gap-1 px-6 py-4 sm:flex-row sm:items-baseline sm:gap-6">
-              <span class="w-32 shrink-0 text-sm font-medium text-accent">
+            <li>
+              <span class="time">
                 {item.data.startTime}{item.data.endTime ? `–${item.data.endTime}` : ''}
               </span>
               <div>
-                <p class="font-semibold text-ink">{item.data.title}</p>
-                {item.data.description && <p class="mt-1 text-sm text-ink-muted">{item.data.description}</p>}
+                <p class="title">{item.data.title}</p>
+                {item.data.description && <p class="desc">{item.data.description}</p>}
                 {item.data.speakerIds.length > 0 && (
-                  <p class="mt-1 text-sm text-ink-muted">
+                  <p class="desc">
                     {item.data.speakerIds.map((id) => speakerNames.get(id)).filter(Boolean).join(', ')}
                   </p>
                 )}
@@ -62,3 +60,99 @@ for (const item of items) {
     );
   })}
 </section>
+
+<style>
+.agenda-section {
+  padding: 4rem 0;
+}
+
+.agenda-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--brand-primary, #ff4d10);
+}
+
+.agenda-head h2 {
+  margin: 0.4rem 0 0;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  color: #1f2429;
+}
+
+.view-all {
+  font-weight: 700;
+  color: var(--brand-primary, #ff4d10);
+  text-decoration: none;
+}
+
+.day-block {
+  margin-top: 2.4rem;
+}
+
+.day-block h3 {
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  font-size: 1.2rem;
+  color: #1f2429;
+  margin: 0 0 0.8rem;
+}
+
+.agenda-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #e9d8c2;
+  border-radius: 16px;
+  background: #fffdf9;
+  overflow: hidden;
+}
+
+.agenda-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid #e9d8c2;
+}
+
+.agenda-list li:last-child {
+  border-bottom: none;
+}
+
+@media (min-width: 640px) {
+  .agenda-list li {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 1.4rem;
+  }
+}
+
+.time {
+  flex: 0 0 8rem;
+  font-weight: 700;
+  color: var(--brand-primary, #ff4d10);
+  font-size: 0.92rem;
+}
+
+.title {
+  margin: 0;
+  font-weight: 700;
+  color: #1f2429;
+}
+
+.desc {
+  margin: 0.25rem 0 0;
+  color: #6a5f57;
+  font-size: 0.92rem;
+}
+</style>

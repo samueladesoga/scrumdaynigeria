@@ -6,32 +6,165 @@ interface NavItem {
 
 interface Props {
   nav: NavItem[];
-  eventName: string;
   ticketUrl: string;
 }
 
-const { nav, eventName, ticketUrl } = Astro.props;
+const { nav, ticketUrl } = Astro.props;
 ---
 
-<header class="sticky top-0 z-50 border-b border-border/80 bg-bg/90 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-    <a href="/" class="text-lg font-bold tracking-tight text-ink">
-      {eventName}
+<header class="site-header" id="top">
+  <div class="container header-wrap">
+    <a href="/" class="brand-mark" aria-label="Scrum Day Nigeria home">
+      <img class="brand-logo" src="/brand-mark.svg" alt="Scrum Day Nigeria" />
     </a>
 
-    <nav class="hidden items-center gap-8 text-sm font-medium text-ink-muted md:flex">
-      {nav.map((item) => (
-        <a href={item.href} class="transition-colors hover:text-ink">
-          {item.label}
-        </a>
-      ))}
+    <nav aria-label="Main navigation" class="main-nav">
+      <ul class="nav-list">
+        {nav.map((item) => (
+          <li>
+            <a href={item.href}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
     </nav>
 
-    <a
-      href={ticketUrl}
-      class="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-    >
-      Buy Ticket
-    </a>
+    <div class="header-cta">
+      <a href={ticketUrl} class="btn-primary">Tickets</a>
+    </div>
   </div>
 </header>
+
+<style>
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #f7f6f4;
+  border-bottom: none;
+  width: 100%;
+  pointer-events: auto;
+}
+
+.header-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.2rem;
+  width: 100%;
+  max-width: unset;
+  min-height: 76px;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 92%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  flex: none;
+}
+
+.brand-logo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  display: block;
+}
+
+.main-nav {
+  flex: 1;
+  margin: 0 1rem;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.nav-list li a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.58rem 1rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #202225;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 8px 18px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.nav-list li a:hover {
+  background: #f6f1e8;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.header-cta {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.btn-primary {
+  padding: 0.7rem 1.4rem;
+  background: var(--brand-primary);
+  color: white;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(255, 79, 18, 0.3);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: var(--brand-primary-dark);
+  box-shadow: 0 6px 16px rgba(255, 79, 18, 0.4);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .header-wrap {
+    gap: 1rem;
+  }
+
+  .main-nav {
+    margin: 0 1rem;
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-list {
+    gap: 0.3rem;
+  }
+
+  .nav-list li a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+</style>

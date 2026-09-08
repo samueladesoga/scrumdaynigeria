@@ -1,10 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
 import Agenda from '../components/Agenda.astro';
+import { getEntry } from 'astro:content';
+
+const site = await getEntry('site', 'config');
 ---
 
 <Layout title="Schedule">
-  <main class="pt-12">
+  <Header nav={site!.data.nav} ticketUrl={site!.data.ticketUrl} />
+  <main class="schedule-page">
     <Agenda />
   </main>
 </Layout>
+
+<style>
+.schedule-page {
+  background: #f7f6f4;
+  min-height: 100vh;
+}
+</style>

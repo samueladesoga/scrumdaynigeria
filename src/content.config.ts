@@ -108,6 +108,57 @@ const pastEditions = defineCollection({
     }),
 });
 
+// The event-day summary cards on the homepage "program" stage (mirrors the
+// old site's Pre-Event Mixer / Main Conference Day split).
+const programDays = defineCollection({
+  loader: file('./src/content/program-days.yaml'),
+  schema: ({ image }) =>
+    z.object({
+      id: z.string(),
+      date: z.string(), // display label, e.g. "23 Mar" or "24 Mar"
+      title: z.string(),
+      description: z.string(),
+      image: image(),
+      ctaLabel: z.string().default('More Info'),
+      ctaHref: z.string().default('/schedule'),
+      spotsLabel: z.string().optional(), // e.g. "200+ Spots"
+      priceLabel: z.string().optional(), // e.g. "Included with ticket"
+      order: z.number().default(99),
+    }),
+});
+
+// Ticket tiers shown in the pricing section, grouped by `category`.
+const ticketTiers = defineCollection({
+  loader: file('./src/content/ticket-tiers.yaml'),
+  schema: z.object({
+    id: z.string(),
+    category: z.string().default('general'), // groups tiers under a tab
+    categoryLabel: z.string().default('General'),
+    dates: z.string(), // e.g. "24 MAR"
+    badge: z.string().optional(), // e.g. "EARLY BIRD"
+    title: z.string(),
+    description: z.string(),
+    priceLabel: z.string().default('Standard'),
+    priceNote: z.string().optional(),
+    oldPrice: z.string().optional(),
+    price: z.string(), // display string — keep as text since currency/format may vary
+    ctaLabel: z.string().default('Buy Ticket'),
+    order: z.number().default(99),
+  }),
+});
+
+// Full-bleed venue carousel photos.
+const venuePhotos = defineCollection({
+  loader: file('./src/content/venue-photos.yaml'),
+  schema: ({ image }) =>
+    z.object({
+      id: z.string(),
+      image: image(),
+      alt: z.string(),
+      order: z.number().default(99),
+    }),
+});
+
 const site = defineCollection({
   loader: file('./src/content/site.yaml'),
   schema: z.object({
@@ -148,6 +199,8 @@ const site = defineCollection({
         href: z.string(),
       })
     ),
+    highlightsVideoId: z.string().optional(), // YouTube video id for the "aftermovie" card; omit to hide it
+    ticketsIncluded: z.array(z.string()).default([]),
   }),
 });
 
@@ -159,5 +212,8 @@ export const collections = {
   agenda,
   learningTracks,
   pastEditions,
+  programDays,
+  ticketTiers,
+  venuePhotos,
   site,
 };

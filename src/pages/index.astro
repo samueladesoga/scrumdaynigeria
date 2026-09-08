@@ -1,42 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
-import Metrics from '../components/Metrics.astro';
-import About from '../components/About.astro';
-import LearningTracks from '../components/LearningTracks.astro';
-import Speakers from '../components/Speakers.astro';
-import Agenda from '../components/Agenda.astro';
-import WhoShouldAttend from '../components/WhoShouldAttend.astro';
-import Testimonials from '../components/Testimonials.astro';
-import Partners from '../components/Partners.astro';
-import SponsorshipCTA from '../components/SponsorshipCTA.astro';
-import { getEntry } from 'astro:content';
+import SectionScrollNav from '../components/SectionScrollNav.vue';
+import Hero from '../components/Hero.vue';
+import StageIntro from '../components/StageIntro.astro';
+import ProgramSection from '../components/ProgramSection.astro';
+import SpeakersShowcase from '../components/SpeakersShowcase.astro';
+import TestimonialsMarquee from '../components/TestimonialsMarquee.astro';
+import VenueCarousel from '../components/VenueCarousel.astro';
+import TicketsSection from '../components/TicketsSection.vue';
+import { getCollection, getEntry } from 'astro:content';
 
 const site = await getEntry('site', 'config');
 if (!site) throw new Error('Missing site config entry (src/content/site.yaml)');
 const { data } = site;
+
+const partners = await getCollection('partners');
+const partnerNames = partners.map((p) => p.data.name);
+
+const ticketTiers = (await getCollection('ticketTiers')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout>
+<Layout title="Home">
+  <SectionScrollNav client:load nav={data.nav} ticketUrl={data.ticketUrl} />
   <main>
     <Hero
-      eventName={data.eventName}
-      theme={data.theme}
-      tagline={data.tagline}
+      client:load
       displayDate={data.displayDate}
-      displayTime={data.displayTime}
       venueName={data.venueName}
       venueAddress={data.venueAddress}
+      theme={data.theme}
+      tagline={data.tagline}
       ticketUrl={data.ticketUrl}
+      expectedParticipants={data.metrics.expectedParticipants}
+      partnerNames={partnerNames}
     />
-    <Metrics metrics={data.metrics} />
-    <About eventName={data.eventName} />
-    <LearningTracks />
-    <Speakers limit={4} showViewAll />
-    <Agenda showViewAll />
-    <WhoShouldAttend items={data.whoShouldAttend} />
-    <Testimonials />
-    <Partners />
-    <SponsorshipCTA contactEmail={data.contactEmail} />
+    <StageIntro />
+    <ProgramSection />
+    <SpeakersShowcase />
+    <TestimonialsMarquee />
+    <VenueCarousel />
+    <TicketsSection client:load tiers={ticketTiers.map((t) => ({ id: t.id, ...t.data }))} included={data.ticketsIncluded} ticketUrl={data.ticketUrl} />
   </main>
 </Layout>

@@ -2,61 +2,308 @@
 interface Props {
   site: {
     eventName: string;
-    contactEmail: string;
     venueName: string;
     venueAddress: string;
-    nav: { label: string; href: string }[];
-    social: { instagram?: string; linkedin?: string; twitter?: string; facebook?: string };
+    contactEmail: string;
   };
 }
 
 const { site } = Astro.props;
 const year = new Date().getFullYear();
-const socialLinks = Object.entries(site.social).filter(([, url]) => Boolean(url));
 ---
 
-<footer id="contact" class="border-t border-border bg-bg-raised">
-  <div class="mx-auto max-w-6xl px-6 py-12">
-    <div class="grid gap-10 md:grid-cols-3">
-      <div>
-        <p class="text-lg font-bold text-ink">{site.eventName}</p>
-        <p class="mt-2 text-sm text-ink-muted">{site.venueName}, {site.venueAddress}</p>
-        <a href={`mailto:${site.contactEmail}`} class="mt-2 inline-block text-sm text-accent hover:underline">
-          {site.contactEmail}
-        </a>
-      </div>
-
-      <div>
-        <p class="text-sm font-semibold text-ink">Quick Links</p>
-        <ul class="mt-3 space-y-2">
-          {site.nav.map((item) => (
-            <li>
-              <a href={item.href} class="text-sm text-ink-muted transition-colors hover:text-ink">
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {socialLinks.length > 0 && (
-        <div>
-          <p class="text-sm font-semibold text-ink">Follow</p>
-          <ul class="mt-3 space-y-2">
-            {socialLinks.map(([platform, url]) => (
-              <li>
-                <a href={url} target="_blank" rel="noopener noreferrer" class="text-sm capitalize text-ink-muted transition-colors hover:text-ink">
-                  {platform}
-                </a>
-              </li>
-            ))}
-          </ul>
+<footer class="site-footer" id="contact">
+  <div class="container footer-signup-wrap">
+    <section class="footer-signup" aria-labelledby="footer-signup-title">
+      <div class="footer-signup-copy">
+        <div class="footer-signup-badge" aria-hidden="true">
+          <span class="footer-signup-mark"></span>
         </div>
-      )}
+        <div>
+          <h2 id="footer-signup-title">Stay up to date!</h2>
+          <p>
+            Get announcements before anyone else, plus speaker and ticket updates. Unsubscribe at any time.
+          </p>
+        </div>
+      </div>
+
+      <form class="footer-signup-form" method="post" action={`mailto:${site.contactEmail}`}>
+        <div class="signup-grid">
+          <label class="signup-field">
+            <span class="sr-only">Full Name</span>
+            <input type="text" name="firstName" placeholder="Full Name *" required />
+          </label>
+
+          <label class="signup-field">
+            <span class="sr-only">Last Name</span>
+            <input type="text" name="lastName" placeholder="Last Name *" required />
+          </label>
+        </div>
+
+        <label class="signup-field signup-field-wide">
+          <span class="sr-only">Email Address</span>
+          <input type="email" name="email" placeholder="Email Address *" required />
+        </label>
+
+        <div class="signup-actions">
+          <label class="signup-consent">
+            <input type="checkbox" name="consent" required />
+            <span>I agree to be contacted about Scrum Day Nigeria updates *</span>
+          </label>
+
+          <button type="submit" class="signup-submit">Sign Up &rarr;</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-brand">{site.eventName}</p>
+      <p class="footer-copy">Building better products — sooner, safer, happier.</p>
     </div>
 
-    <p class="mt-10 border-t border-border pt-6 text-xs text-ink-muted">
-      &copy; {year} {site.eventName}. All rights reserved.
-    </p>
+    <div>
+      <p class="footer-title">Venue</p>
+      <p>{site.venueName}</p>
+      <p>{site.venueAddress}</p>
+    </div>
+
+    <div>
+      <p class="footer-title">Links</p>
+      <ul class="footer-links">
+        <li><a href="/speakers">Speakers</a></li>
+        <li><a href="/schedule">Schedule</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href={`mailto:${site.contactEmail}`}>Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>&copy; {year} Scrum Day Nigeria. All rights reserved.</p>
   </div>
 </footer>
+
+<style>
+.site-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  background: #111616;
+  color: #eef1f2;
+}
+
+.footer-signup-wrap {
+  padding-top: 2rem;
+}
+
+.footer-signup {
+  display: grid;
+  grid-template-columns: minmax(290px, 0.95fr) minmax(0, 1.55fr);
+  gap: 1.5rem;
+  align-items: center;
+  background: #f8f8f8;
+  color: #232a2f;
+  border-radius: 26px;
+  padding: 1.4rem 1.45rem 1.25rem;
+  box-shadow: 0 20px 54px rgba(0, 0, 0, 0.24);
+}
+
+.footer-signup-copy {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.95rem;
+}
+
+.footer-signup-badge {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  background: #232a2f;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.footer-signup-mark {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  position: relative;
+}
+
+.footer-signup-mark::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 2px;
+  background: #fff;
+  transform: translate(-50%, -50%) rotate(-22deg);
+  border-radius: 999px;
+}
+
+.footer-signup h2 {
+  margin: 0;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  font-size: clamp(1.85rem, 2.55vw, 2.35rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+.footer-signup p {
+  margin: 0.5rem 0 0;
+  color: #2e3539;
+  font-size: 1.08rem;
+  line-height: 1.42;
+  max-width: 31ch;
+}
+
+.footer-signup-form {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.signup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.signup-field input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #4f555a;
+  border-radius: 9px;
+  background: #fff;
+  color: #1f2529;
+  padding: 0.72rem 0.95rem;
+  font: inherit;
+  font-size: 1rem;
+}
+
+.signup-field input::placeholder {
+  color: #6d7478;
+}
+
+.signup-field input:focus {
+  outline: 2px solid rgba(255, 77, 16, 0.22);
+  border-color: var(--brand-primary, #ff4d10);
+}
+
+.signup-field-wide input {
+  width: 100%;
+}
+
+.signup-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.signup-consent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #353c40;
+  font-size: 0.88rem;
+  line-height: 1.25;
+  max-width: 74%;
+}
+
+.signup-consent input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--brand-primary, #ff4d10);
+}
+
+.signup-submit {
+  border: 0;
+  border-radius: 999px;
+  background: var(--brand-primary, #ff4d10);
+  color: #fff;
+  min-height: 46px;
+  padding: 0.72rem 1.25rem;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(255, 77, 16, 0.24);
+}
+
+.footer-grid {
+  padding: 2.2rem 0 1.1rem;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.footer-brand {
+  margin: 0;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footer-copy {
+  color: #b2b9bc;
+  max-width: 42ch;
+}
+
+.footer-title {
+  margin: 0 0 0.45rem;
+  font-weight: 800;
+}
+
+.footer-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #b2b9bc;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.95rem 0 1.3rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  color: #b2b9bc;
+}
+
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-signup {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-signup-copy {
+    max-width: 560px;
+  }
+
+  .signup-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .signup-actions {
+    align-items: flex-start;
+  }
+
+  .signup-consent {
+    max-width: 100%;
+  }
+}
+</style>

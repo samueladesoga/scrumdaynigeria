@@ -1,0 +1,25 @@
+# Homepage "program" cards (dark stage section). Keep this to 2-3 entries —
+# it's a summary, not the full agenda (see agenda/agenda.yaml for that).
+# TODO: swap `image` for a real photo once available.
+
+- id: mixer
+  order: 1
+  date: "23 MAR"
+  title: "Pre-Event Mixer"
+  description: "An informal evening to connect with speakers and fellow attendees ahead of the main conference."
+  image: "../assets/placeholders/cover.svg"
+  ctaLabel: "More Info"
+  ctaHref: "/schedule"
+  spotsLabel: "Open to all attendees"
+  priceLabel: "Free"
+
+- id: main-day
+  order: 2
+  date: "24 MAR"
+  title: "Main Conference Day"
+  description: "A full day of talks, panels, and hands-on sessions on flow and value in an agentic enterprise."
+  image: "../assets/placeholders/cover.svg"
+  ctaLabel: "See Schedule"
+  ctaHref: "/schedule"
+  spotsLabel: "200+ Spots"
+  priceLabel: "See ticket pricing"

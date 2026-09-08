@@ -1,0 +1,16 @@
+# Ticket pricing cards. Group tiers under the same `category`/`categoryLabel`
+# to show them as tabs; with only one category, the tab bar hides itself.
+# TODO: replace price/description with real 2026 pricing.
+
+- id: standard
+  order: 1
+  category: general
+  categoryLabel: "General"
+  dates: "24 MAR"
+  badge: "TBD"
+  title: "Standard Ticket"
+  description: "Full access to the main conference day, including talks, panels, sessions, and refreshments."
+  priceLabel: "Standard"
+  priceNote: "Price to be announced"
+  price: "TBD"
+  ctaLabel: "Buy Ticket"

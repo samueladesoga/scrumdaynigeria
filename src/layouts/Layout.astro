@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { getEntry } from 'astro:content';
 
@@ -22,10 +21,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
+    <meta name="theme-color" content="#ff4d10" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
@@ -39,7 +46,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="alternate" type="application/rss+xml" title={site.data.eventName} href="/rss.xml" />
   </head>
   <body>
-    <Header nav={site.data.nav} eventName={site.data.eventName} ticketUrl={site.data.ticketUrl} />
     <slot />
     <Footer site={site.data} />
   </body>
