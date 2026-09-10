@@ -5,13 +5,14 @@
     <div class="hero-grid-atmosphere" ref="gridOverlayRef" aria-hidden="true"></div>
 
     <div class="hero-top container" ref="heroTopRef">
-      <img class="hero-logo" src="/brand-icon.png" alt="Scrum Day Nigeria logo" />
+      <h1 class="hero-title" ref="titleRef">
+        <img class="hero-title-logo" src="/brand-lockup.svg" alt="Scrum Day Nigeria" />
+      </h1>
       <p class="hero-date">{{ displayDate }} &middot; {{ venueName }}, {{ venueAddress }}</p>
       <p class="hero-organizer">
         An event by
         <img class="organizer-logo" src="/valuehut-logo.svg" alt="ValueHut Consulting Limited" />
       </p>
-      <h1 class="hero-title" ref="titleRef"><span class="title-line-1">Scrum Day</span> <span class="title-line-2">Nigeria</span></h1>
       <p class="hero-copy">{{ theme }}.</p>
 
       <div class="hero-actions" ref="actionsRef">
@@ -227,14 +228,6 @@ onMounted(() => {
   padding-bottom: 2.25rem;
 }
 
-.hero-logo {
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 1rem;
-  object-fit: contain;
-  display: block;
-}
-
 .hero-date {
   margin: 0 0 0.65rem;
   text-transform: uppercase;
@@ -245,7 +238,7 @@ onMounted(() => {
 }
 
 .hero-organizer {
-  margin: 0 0 0.9rem;
+  margin: 0 0 1.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -264,22 +257,24 @@ onMounted(() => {
 }
 
 .hero-title {
-  margin: 0;
-  text-transform: uppercase;
-  line-height: 0.86;
-  font-size: clamp(3.6rem, 9vw, 8.3rem);
-  letter-spacing: -0.02em;
-  font-weight: 400;
-  font-family: "Bebas Neue", "Arial Narrow", "Segoe UI", sans-serif;
-  white-space: nowrap;
+  margin: 0 0 1.3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-title-logo {
+  width: clamp(140px, 13vw, 200px);
+  height: auto;
+  display: block;
 }
 
 .hero-copy {
-  margin: 0.9rem auto 0;
-  max-width: 26ch;
-  font-size: clamp(1.35rem, 2.6vw, 2.05rem);
-  font-weight: 600;
-  line-height: 1.18;
+  margin: 0.3rem auto 0;
+  max-width: 21ch;
+  font-size: clamp(1.7rem, 3.6vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
   color: #1c2022;
   font-family: "Space Grotesk", "Segoe UI", sans-serif;
 }
@@ -448,13 +443,20 @@ onMounted(() => {
 }
 
 @media (max-width: 640px) {
-  .hero-title {
-    white-space: normal;
-    font-size: clamp(3.2rem, 15vw, 5.4rem);
+  .hero-title-logo {
+    width: clamp(120px, 34vw, 170px);
   }
 
-  .title-line-2 {
-    display: block;
+  .hero-title {
+    margin-bottom: 1.1rem;
+  }
+
+  .hero-organizer {
+    margin-bottom: 1.3rem;
+  }
+
+  .hero-copy {
+    max-width: 18ch;
   }
 
   .hero-radial {
