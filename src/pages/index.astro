@@ -5,6 +5,7 @@ import Hero from '../components/Hero.vue';
 import StageIntro from '../components/StageIntro.astro';
 import ProgramSection from '../components/ProgramSection.astro';
 import SpeakersShowcase from '../components/SpeakersShowcase.astro';
+import PartnersShowcase from '../components/PartnersShowcase.astro';
 import TestimonialsMarquee from '../components/TestimonialsMarquee.astro';
 import VenueCarousel from '../components/VenueCarousel.astro';
 import TicketsSection from '../components/TicketsSection.vue';
@@ -15,7 +16,7 @@ if (!site) throw new Error('Missing site config entry (src/content/site.yaml)');
 const { data } = site;
 
 const partners = await getCollection('partners');
-const partnerNames = partners.map((p) => p.data.name);
+const partnerNames = partners.filter((p) => p.data.type === 'strategic').map((p) => p.data.name);
 
 const ticketTiers = (await getCollection('ticketTiers')).sort((a, b) => a.data.order - b.data.order);
 ---
@@ -36,6 +37,7 @@ const ticketTiers = (await getCollection('ticketTiers')).sort((a, b) => a.data.o
     <StageIntro />
     <ProgramSection />
     <SpeakersShowcase />
+    <PartnersShowcase />
     <TestimonialsMarquee />
     <VenueCarousel />
     <TicketsSection client:load tiers={ticketTiers.map((t) => ({ id: t.id, ...t.data }))} included={data.ticketsIncluded} ticketUrl={data.ticketUrl} />

@@ -1,8 +1,6 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
-import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
 
-const partners = (await getCollection('partners')).sort((a, b) => a.data.order - b.data.order);
 const site = await getEntry('site', 'config');
 const videoId = site?.data.highlightsVideoId;
 const embedUrl = videoId
@@ -11,7 +9,7 @@ const embedUrl = videoId
 const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : null;
 ---
 
-<section class="noise-stage" id="partners" aria-labelledby="noise-stage-title">
+<section class="noise-stage" aria-labelledby="noise-stage-title">
   <div class="noise-shell container">
     <span class="noise-kicker reveal-line" style="--reveal-delay: 0s;">Beyond The Buzzwords</span>
     <h2 id="noise-stage-title" class="noise-title reveal-line" style="--reveal-delay: 0.12s;">
@@ -35,20 +33,6 @@ const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : null;
         ></iframe>
         <a class="video-pill" href={watchUrl} target="_blank" rel="noopener noreferrer" aria-label="Watch highlights on YouTube">Watch 2026 Highlights</a>
       </article>
-    )}
-
-    {partners.length > 0 && (
-      <section class="brand-showcase" aria-labelledby="brand-showcase-title">
-        <p id="brand-showcase-title" class="brand-note reveal-line" style="--reveal-delay: 0.36s;">Strategic &amp; Media Partners</p>
-
-        <div class="brand-row reveal-line" style="--reveal-delay: 0.48s;">
-          {partners.map((partner, index) => (
-            <span class="brand-icon" aria-label={partner.data.name} title={partner.data.name} style={`--icon-delay: ${0.74 + index * 0.08}s;`}>
-              <Image class="brand-logo" src={partner.data.logo} alt={partner.data.name} width={40} height={40} />
-            </span>
-          ))}
-        </div>
-      </section>
     )}
   </div>
 
@@ -87,7 +71,7 @@ const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : null;
   background-image: linear-gradient(180deg, #0e494f 0%, #0a3438 42%, #082f33 100%);
   background-size: 130% 130%;
   color: #eef3f6;
-  margin-top: -340px;
+  margin-top: -120px;
   padding: 260px 0 3.8rem;
   clip-path: polygon(
     0 16%, 8% 14%, 22% 12%, 36% 10%, 50% 9%, 64% 10%, 78% 12%, 92% 14%, 100% 16%, 100% 100%, 0 100%
@@ -180,71 +164,6 @@ const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : null;
   opacity: 1;
   transform: translate3d(0, 0, 0);
   filter: blur(0);
-}
-
-.brand-note {
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 1.4rem;
-  color: #d7dce0;
-  font-weight: 700;
-}
-
-.brand-showcase {
-  position: relative;
-  margin: 3.2rem auto 0;
-  padding: 1.1rem 0 0.25rem;
-  max-width: 980px;
-}
-
-.brand-row {
-  margin-top: 1.55rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-  color: #f4f7fa;
-  font-weight: 700;
-  position: relative;
-  z-index: 1;
-}
-
-.brand-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: linear-gradient(160deg, rgba(20, 90, 97, 0.55), rgba(6, 30, 33, 0.92));
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-  opacity: 0;
-  transform: translate3d(0, 14px, 0) scale(0.82);
-  filter: blur(6px);
-  will-change: transform, opacity, filter;
-  overflow: hidden;
-  transition: transform 0.26s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.26s ease, border-color 0.26s ease;
-}
-
-.noise-stage.is-visible .brand-icon {
-  animation: icon-reveal 0.62s cubic-bezier(0.2, 0.78, 0.18, 1) forwards;
-  animation-delay: var(--icon-delay, 0s);
-}
-
-.brand-icon:hover {
-  transform: translate3d(0, -4px, 0) scale(1.06);
-  border-color: rgba(238, 244, 248, 0.5);
-}
-
-.brand-logo {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  border-radius: 999px;
-  background: #fff;
 }
 
 .decor {
@@ -403,12 +322,6 @@ const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : null;
   50% { transform: translate3d(0, -8px, 0) rotate(8deg); }
 }
 
-@keyframes icon-reveal {
-  0% { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.82); filter: blur(6px); }
-  75% { opacity: 1; transform: translate3d(0, -2px, 0) scale(1.04); filter: blur(0); }
-  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0); }
-}
-
 @media (max-width: 900px) {
   .noise-stage {
     margin-top: -120px;
@@ -438,40 +351,5 @@ const watchUrl = videoId ? `https://www.youtube.com/watch?v=${videoId}` : null;
     top: 460px;
   }
 
-  .brand-note {
-    font-size: 1.1rem;
-    letter-spacing: 0.14em;
-  }
-
-  .brand-row {
-    gap: 1rem;
-  }
-
-  .brand-icon {
-    width: 52px;
-    height: 52px;
-  }
-
-  .brand-logo {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .brand-icon {
-    opacity: 1;
-    transform: none;
-    filter: none;
-    animation: none !important;
-    transition: none;
-  }
-}
-
-@media (hover: none) {
-  .brand-icon:hover {
-    transform: none;
-    border-color: rgba(255, 255, 255, 0.22);
-  }
 }
 </style>

@@ -6,7 +6,7 @@ const partners = (await getCollection('partners')).sort((a, b) => a.data.order -
 ---
 
 {partners.length > 0 && (
-  <section class="partners-showcase" aria-labelledby="partners-showcase-title">
+  <section class="partners-showcase" id="partners" aria-labelledby="partners-showcase-title">
     <div class="container">
       <p id="partners-showcase-title" class="partners-kicker">Strategic &amp; Media Partners</p>
 
@@ -30,8 +30,11 @@ const partners = (await getCollection('partners')).sort((a, b) => a.data.order -
 
 <style>
 .partners-showcase {
-  background: #ffffff;
-  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+  background-color: #082f33;
+  background-image: linear-gradient(180deg, #0a3438 0%, #0e494f 50%, #082f33 100%);
+  padding: 4.5rem 0;
 }
 
 .partners-kicker {
@@ -41,7 +44,7 @@ const partners = (await getCollection('partners')).sort((a, b) => a.data.order -
   letter-spacing: 0.18em;
   font-size: 0.95rem;
   font-weight: 700;
-  color: #5d6871;
+  color: #cfd9db;
 }
 
 .partners-row {
@@ -50,6 +53,8 @@ const partners = (await getCollection('partners')).sort((a, b) => a.data.order -
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
+  position: relative;
+  z-index: 1;
 }
 
 .partner-tile {
@@ -60,15 +65,15 @@ const partners = (await getCollection('partners')).sort((a, b) => a.data.order -
   width: 200px;
   padding: 1rem 1.5rem;
   border-radius: 16px;
-  background: #f8f8f8;
-  border: 1px solid #ececec;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .partner-tile:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(6, 9, 12, 0.1);
-  border-color: #dcdcdc;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.3);
 }
 
 .partner-logo {
