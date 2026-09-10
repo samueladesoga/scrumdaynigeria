@@ -70,7 +70,7 @@ const agenda = defineCollection({
   loader: file('./src/content/agenda/agenda.yaml'),
   schema: z.object({
     id: z.string(),
-    day: z.string(), // e.g. "2026-03-23" (pre-event) or "2026-03-24" (main day)
+    day: z.string(), // e.g. "2027-04-14" (pre-event) or "2027-04-15" (main day)
     dayLabel: z.string(), // e.g. "Pre-Event Mixer" / "Main Conference Day"
     startTime: z.string(), // "09:00"
     endTime: z.string().optional(),

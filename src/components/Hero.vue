@@ -72,15 +72,15 @@ const titleRef = ref(null);
 const actionsRef = ref(null);
 const gridOverlayRef = ref(null);
 
-// TODO: replace with real Scrum Day Nigeria event photography once available.
-const marqueeImages = [
-  'https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg?auto=compress&cs=tinysrgb&w=1200',
-  'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200',
-  'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=1200',
-  'https://images.pexels.com/photos/3153198/pexels-photo-3153198.jpeg?auto=compress&cs=tinysrgb&w=1200',
-  'https://images.pexels.com/photos/2833037/pexels-photo-2833037.jpeg?auto=compress&cs=tinysrgb&w=1200',
-  'https://images.pexels.com/photos/1181534/pexels-photo-1181534.jpeg?auto=compress&cs=tinysrgb&w=1200',
-];
+// Drop event photos into src/assets/hero-marquee/ to have them picked up here automatically.
+const marqueeModules = import.meta.glob('../assets/hero-marquee/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default',
+});
+const marqueeImages = Object.keys(marqueeModules)
+  .sort()
+  .map((path) => marqueeModules[path])
+  .map((mod) => (typeof mod === 'string' ? mod : mod.src));
 
 onMounted(() => {
   const cleanupFns = [];

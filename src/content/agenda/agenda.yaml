@@ -2,10 +2,10 @@
 # `speakerIds` reference the filename (without extension) of a file in src/content/speakers/.
 # `track` references an `id` from src/content/learning-tracks.yaml.
 #
-# NOTE: this is a placeholder skeleton for 2026 — replace times/titles once confirmed.
+# NOTE: this is a placeholder skeleton for 2027 — replace times/titles once confirmed.
 
 - id: mixer-welcome
-  day: "2026-03-23"
+  day: "2027-04-14"
   dayLabel: "Pre-Event Mixer"
   startTime: "18:00"
   endTime: "20:00"
@@ -15,7 +15,7 @@
   speakerIds: []
 
 - id: registration
-  day: "2026-03-24"
+  day: "2027-04-15"
   dayLabel: "Main Conference Day"
   startTime: "09:00"
   endTime: "09:30"
@@ -24,7 +24,7 @@
   speakerIds: []
 
 - id: opening-keynote
-  day: "2026-03-24"
+  day: "2027-04-15"
   dayLabel: "Main Conference Day"
   startTime: "09:30"
   endTime: "10:15"
@@ -34,7 +34,7 @@
   speakerIds: []
 
 - id: closing-panel
-  day: "2026-03-24"
+  day: "2027-04-15"
   dayLabel: "Main Conference Day"
   startTime: "16:00"
   endTime: "17:00"

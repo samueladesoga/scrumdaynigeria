@@ -1,0 +1,93 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const partners = (await getCollection('partners')).sort((a, b) => a.data.order - b.data.order);
+---
+
+{partners.length > 0 && (
+  <section class="partners-showcase" aria-labelledby="partners-showcase-title">
+    <div class="container">
+      <p id="partners-showcase-title" class="partners-kicker">Strategic &amp; Media Partners</p>
+
+      <div class="partners-row">
+        {partners.map((partner) => (
+          <a
+            class="partner-tile"
+            href={partner.data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={partner.data.name}
+            title={partner.data.name}
+          >
+            <Image class="partner-logo" src={partner.data.logo} alt={partner.data.name} width={320} height={120} />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+.partners-showcase {
+  background: #ffffff;
+  padding: 4rem 0;
+}
+
+.partners-kicker {
+  margin: 0 0 2.2rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #5d6871;
+}
+
+.partners-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.partner-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96px;
+  width: 200px;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  background: #f8f8f8;
+  border: 1px solid #ececec;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.partner-tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(6, 9, 12, 0.1);
+  border-color: #dcdcdc;
+}
+
+.partner-logo {
+  max-width: 100%;
+  max-height: 56px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 680px) {
+  .partner-tile {
+    width: 150px;
+    height: 80px;
+    padding: 0.75rem 1rem;
+  }
+
+  .partner-logo {
+    max-height: 42px;
+  }
+}
+</style>

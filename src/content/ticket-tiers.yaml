@@ -1,12 +1,12 @@
 # Ticket pricing cards. Group tiers under the same `category`/`categoryLabel`
 # to show them as tabs; with only one category, the tab bar hides itself.
-# TODO: replace price/description with real 2026 pricing.
+# TODO: replace price/description with real 2027 pricing.
 
 - id: standard
   order: 1
   category: general
   categoryLabel: "General"
-  dates: "24 MAR"
+  dates: "15 APR"
   badge: "TBD"
   title: "Standard Ticket"
   description: "Full access to the main conference day, including talks, panels, sessions, and refreshments."
@@ -20,7 +20,7 @@
   category: hackathon
   categoryLabel: "Hackathon"
   
-  dates: "24 MAR"
+  dates: "15 APR"
   badge: "TBD"
   title: "Hackathon Ticket"
   description: "Full access to the Hackathon."
