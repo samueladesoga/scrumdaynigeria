@@ -21,7 +21,7 @@ const bottomRow = withContent.slice(mid);
           {[...topRow, ...topRow].map(({ entry, Content }) => (
             <article class="testimonial-card">
               <p class="quote-mark" aria-hidden="true">&ldquo;</p>
-              <p class="quote"><Content /></p>
+              <div class="quote"><Content /></div>
 
               <div class="person-row">
                 {entry.data.image ? (
@@ -45,7 +45,7 @@ const bottomRow = withContent.slice(mid);
             {[...bottomRow, ...bottomRow].map(({ entry, Content }) => (
               <article class="testimonial-card">
                 <p class="quote-mark" aria-hidden="true">&ldquo;</p>
-                <p class="quote"><Content /></p>
+                <div class="quote"><Content /></div>
 
                 <div class="person-row">
                   {entry.data.image ? (
@@ -156,6 +156,15 @@ const bottomRow = withContent.slice(mid);
   font-size: 1.03rem;
   line-height: 1.42;
   color: #222a31;
+  overflow: hidden;
+}
+
+.quote :global(p) {
+  margin: 0 0 0.6em;
+}
+
+.quote :global(p:last-child) {
+  margin-bottom: 0;
 }
 
 .person-row {
