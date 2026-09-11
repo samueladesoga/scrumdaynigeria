@@ -1,5 +1,5 @@
 ---
-name: "Emitope Oladiji"
+name: "Temitope Oladiji"
 role: "Business Analyst"
 company: "CSSS"
 order: 1
