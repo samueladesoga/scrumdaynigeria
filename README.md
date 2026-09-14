@@ -40,7 +40,7 @@ Everything editable lives under `src/content/` — no code changes needed to upd
 | `programDays` | `src/content/program-days.yaml` | Homepage day-summary cards (mixer / main day) |
 | `ticketTiers` | `src/content/ticket-tiers.yaml` | Pricing cards, grouped by `category` |
 | `venuePhotos` | `src/content/venue-photos.yaml` | Full-bleed venue carousel photos |
-| `learningTracks` | `src/content/learning-tracks.yaml` | This year's theme tracks (not yet on a page) |
+| `learningTracks` | `src/content/learning-tracks.yaml` | This year's focus areas, shown in the homepage Focus Areas section |
 | `pastEditions` | `src/content/past-editions.yaml` | Past edition summaries (not yet on a page) |
 | `site` | `src/content/site.yaml` | Global config: dates, venue, nav, socials, ticket link |
 

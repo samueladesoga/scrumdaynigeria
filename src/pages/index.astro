@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import SectionScrollNav from '../components/SectionScrollNav.vue';
 import Hero from '../components/Hero.vue';
 import StageIntro from '../components/StageIntro.astro';
+import FocusAreasSection from '../components/FocusAreasSection.astro';
 import ProgramSection from '../components/ProgramSection.astro';
 import SpeakersShowcase from '../components/SpeakersShowcase.astro';
 import PartnersShowcase from '../components/PartnersShowcase.astro';
@@ -35,6 +36,7 @@ const ticketTiers = (await getCollection('ticketTiers')).sort((a, b) => a.data.o
       partnerNames={partnerNames}
     />
     <StageIntro />
+    <FocusAreasSection />
     <ProgramSection />
     <SpeakersShowcase />
     <PartnersShowcase />
