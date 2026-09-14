@@ -251,7 +251,7 @@ onMounted(() => {
 }
 
 .organizer-logo {
-  height: 14px;
+  height: 22px;
   width: auto;
   display: block;
 }
