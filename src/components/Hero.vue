@@ -10,7 +10,7 @@
       </h1>
       <p class="hero-date">{{ displayDate }} &middot; {{ venueName }}, {{ venueAddress }}</p>
       <p class="hero-organizer">
-        An event by
+        Organized by
         <img class="organizer-logo" src="/valuehut-logo.svg" alt="ValueHut Consulting Limited" />
       </p>
       <p class="hero-copy">{{ theme }}.</p>
