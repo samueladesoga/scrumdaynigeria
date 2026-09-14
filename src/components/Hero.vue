@@ -11,7 +11,9 @@
       <p class="hero-date">{{ displayDate }} &middot; {{ venueName }}, {{ venueAddress }}</p>
       <p class="hero-organizer">
         Organized by
-        <img class="organizer-logo" src="/valuehut-logo.svg" alt="ValueHut Consulting Limited" />
+        <a href="https://www.valuehut.co/" target="_blank" rel="noopener noreferrer" aria-label="ValueHut Consulting website">
+          <img class="organizer-logo" src="/valuehut-logo.svg" alt="ValueHut Consulting Limited" />
+        </a>
       </p>
       <p class="hero-copy">{{ theme }}.</p>
 
