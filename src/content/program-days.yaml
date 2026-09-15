@@ -6,12 +6,12 @@
   order: 1
   date: "23 MAR"
   title: "Pre-Event Mixer"
-  description: "An informal evening to connect with speakers and fellow attendees ahead of the main conference."
+  description: "An informal evening for speakers and leaders to connect ahead of the main conference."
   image: "../assets/placeholders/cover.svg"
   ctaLabel: "More Info"
   ctaHref: "/schedule"
-  spotsLabel: "Open to all attendees"
-  priceLabel: "Free"
+  spotsLabel: "Strictly by Invitation"
+  priceLabel: "N/A"
 
 - id: main-day
   order: 2
@@ -21,5 +21,16 @@
   image: "../assets/placeholders/cover.svg"
   ctaLabel: "See Schedule"
   ctaHref: "/schedule"
-  spotsLabel: "200+ Spots"
+  spotsLabel: "500+ Spots"
   priceLabel: "See ticket pricing"
+
+- id: hackathon
+  order: 3
+  date: "24 MAR"
+  title: "Hackathon"
+  description: "A half-day hackathon where attendees can collaborate on agentic projects and showcase their skills."
+  image: "../assets/placeholders/cover.svg"
+  ctaLabel: "See Schedule"
+  ctaHref: "/schedule"
+  spotsLabel: "100 Spots"
+  priceLabel: "Register for Hackathon"

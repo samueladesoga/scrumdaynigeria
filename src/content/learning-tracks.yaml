@@ -1,32 +1,32 @@
-# Learning tracks for the "Flow and Value in an Agentic Enterprise" theme.
+# Six focus areas for the 2026 program. Every talk is shortlisted against one of these.
 # Each track can be referenced from agenda.yaml and speakers via its `id`.
 
-- id: agentic-flow
+- id: ai-and-the-new-flow-of-work
   order: 1
-  title: "Agentic Flow"
-  description: "Designing team and system flow when AI agents are part of the delivery pipeline, not just a tool on the side."
+  title: "AI and the New Flow of Work"
+  description: "How AI changes the movement of work from idea to outcome — where cycle times drop, new bottlenecks emerge, and teams redesign hand-offs and decision-making to keep up."
 
-- id: evidence-based-value
+- id: designing-human-agent-teams
   order: 2
-  title: "Evidence-Based Value Delivery"
-  description: "Using data and experimentation — human and agentic — to validate that what's shipped actually creates value."
+  title: "Designing Human + Agent Teams"
+  description: "How teams organise when AI becomes an embedded collaborator rather than a separate tool — what stays human, what goes agentic, and the new skills and roles that emerge."
 
-- id: quality-in-the-loop
+- id: product-and-software-delivery-in-an-agentic-era
   order: 3
-  title: "Quality in the Loop"
-  description: "Maintaining quality and trust as agents take on more of the build, test, and review cycle."
+  title: "Product & Software Delivery in an Agentic Era"
+  description: "Real implementations of AI across discovery, product management, engineering, quality, design and delivery — and what teams are learning when speed outpaces outcomes."
 
-- id: risk-and-governance
+- id: finding-and-moving-the-bottleneck
   order: 4
-  title: "Risk & Governance"
-  description: "Managing the risks — technical, ethical, and organizational — of putting autonomous agents into production workflows."
+  title: "Finding and Moving the Bottleneck"
+  description: "How organisations find the true system constraint instead of just optimising one team or function — and what happens when production outruns governance and decision-making."
 
-- id: team-enablement
+- id: from-throughput-to-value
   order: 5
-  title: "Team Enablement"
-  description: "Equipping Scrum Masters, coaches, and product teams to work effectively alongside agentic systems."
+  title: "From Throughput to Value"
+  description: "How teams measure whether more speed, automation and output are actually creating value — and how they balance that against quality, learning and customer outcomes."
 
-- id: customer-discovery
+- id: leading-and-governing-the-agentic-enterprise
   order: 6
-  title: "Customer Discovery"
-  description: "Keeping product discovery human-centered even as agents accelerate research, synthesis, and delivery."
+  title: "Leading & Governing the Agentic Enterprise"
+  description: "The leadership and governance changes needed to introduce AI without losing flow, trust or accountability — new operating models, decision rights, and the cultural resistance teams run into along the way."

@@ -143,7 +143,8 @@ const activeCategory = computed(() => categories.value[activeCategoryIndex.value
   margin: 1.85rem auto 0;
   max-width: 1120px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 340px));
+  justify-content: center;
   gap: 1rem;
 }
 
