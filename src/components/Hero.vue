@@ -91,6 +91,14 @@ const tripledMarqueeImages = [...props.marqueeImages, ...props.marqueeImages, ..
 onMounted(() => {
   const cleanupFns = [];
 
+  // Small, high-priority images can finish loading before Vue hydrates and binds
+  // the @load handler below, which would otherwise leave them stuck at opacity: 0.
+  if (heroRef.value) {
+    heroRef.value.querySelectorAll('.marquee-track img').forEach((img) => {
+      if (img.complete) img.classList.add('is-loaded');
+    });
+  }
+
   if (heroTopRef.value) {
     animate(heroTopRef.value, { opacity: [0, 1], y: [24, 0] }, { duration: 0.8 });
   }
