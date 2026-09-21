@@ -11,4 +11,4 @@ featured: true
 
 SAMPLE ENTRY — replace with a real speaker bio, or delete this file.
 
-A short bio goes here: background, what they'll be speaking about, and why it matters to the "Flow and Value in an Agentic Enterprise" theme.
+A short bio goes here: background, what they'll be speaking about, and why it matters to the "Flow and Value in the Agentic Enterprise" theme.

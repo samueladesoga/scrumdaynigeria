@@ -1,7 +1,7 @@
 # Single "config" entry (the file loader keys a top-level object by these keys).
 config:
   eventName: Scrum Day Nigeria 2027
-  theme: "Flow and Value in an Agentic Enterprise"
+  theme: "Flow and Value in the Agentic Enterprise"
   tagline: "Building Better Products — Sooner, Safer, Happier"
   eventDate: 2027-04-15
   displayDate: "15th April, 2027"
