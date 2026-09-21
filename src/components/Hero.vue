@@ -48,7 +48,18 @@
         <path d="M0,0 L0,46 C320,108 1120,108 1440,46 L1440,0 Z"></path>
       </svg>
       <div class="marquee-track">
-        <img v-for="(img, i) in [...marqueeImages, ...marqueeImages, ...marqueeImages]" :key="i" :src="img" alt="Scrum Day Nigeria" loading="lazy" />
+        <img
+          v-for="(img, i) in tripledMarqueeImages"
+          :key="i"
+          :src="img.src"
+          :srcset="img.srcset"
+          sizes="(max-width: 640px) 58vw, (max-width: 900px) 280px, 320px"
+          alt="Scrum Day Nigeria"
+          :loading="i < 3 ? 'eager' : 'lazy'"
+          :fetchpriority="i < 2 ? 'high' : 'auto'"
+          decoding="async"
+          @load="$event.target.classList.add('is-loaded')"
+        />
       </div>
     </div>
   </section>
@@ -58,7 +69,7 @@
 import { animate } from 'motion';
 import { onMounted, ref } from 'vue';
 
-defineProps({
+const props = defineProps({
   displayDate: { type: String, required: true },
   venueName: { type: String, required: true },
   venueAddress: { type: String, required: true },
@@ -66,6 +77,7 @@ defineProps({
   ticketUrl: { type: String, required: true },
   expectedParticipants: { type: String, required: true },
   partnerNames: { type: Array, default: () => [] },
+  marqueeImages: { type: Array, default: () => [] },
 });
 
 const heroRef = ref(null);
@@ -74,15 +86,7 @@ const titleRef = ref(null);
 const actionsRef = ref(null);
 const gridOverlayRef = ref(null);
 
-// Drop event photos into src/assets/hero-marquee/ to have them picked up here automatically.
-const marqueeModules = import.meta.glob('../assets/hero-marquee/*.{jpg,jpeg,png,webp}', {
-  eager: true,
-  import: 'default',
-});
-const marqueeImages = Object.keys(marqueeModules)
-  .sort()
-  .map((path) => marqueeModules[path])
-  .map((mod) => (typeof mod === 'string' ? mod : mod.src));
+const tripledMarqueeImages = [...props.marqueeImages, ...props.marqueeImages, ...props.marqueeImages];
 
 onMounted(() => {
   const cleanupFns = [];
@@ -406,6 +410,13 @@ onMounted(() => {
   filter: saturate(1.02) contrast(1.02);
   position: relative;
   display: block;
+  background: linear-gradient(135deg, #eef1f2, #e2e6e8);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.marquee-track img.is-loaded {
+  opacity: 1;
 }
 
 @keyframes marquee-slide {

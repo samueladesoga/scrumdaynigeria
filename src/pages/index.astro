@@ -11,6 +11,7 @@ import TestimonialsMarquee from '../components/TestimonialsMarquee.astro';
 import VenueCarousel from '../components/VenueCarousel.astro';
 import TicketsSection from '../components/TicketsSection.vue';
 import { getCollection, getEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
 
 const site = await getEntry('site', 'config');
 if (!site) throw new Error('Missing site config entry (src/content/site.yaml)');
@@ -20,6 +21,28 @@ const partners = await getCollection('partners');
 const partnerNames = partners.filter((p) => p.data.type === 'strategic').map((p) => p.data.name);
 
 const ticketTiers = (await getCollection('ticketTiers')).sort((a, b) => a.data.order - b.data.order);
+
+// Drop event photos into src/assets/hero-marquee/ to have them picked up here automatically.
+// Resized/re-encoded here (instead of imported raw into Hero.vue) since the marquee only ever
+// displays them at ~320px wide — the source photos were full camera resolution (2.7-4.2MB each).
+const marqueeModules = import.meta.glob('../assets/hero-marquee/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default',
+});
+const marqueeImages = await Promise.all(
+  Object.keys(marqueeModules)
+    .sort()
+    .map(async (path) => {
+      const optimized = await getImage({
+        src: marqueeModules[path],
+        width: 640,
+        widths: [320, 640],
+        format: 'webp',
+        quality: 68,
+      });
+      return { src: optimized.src, srcset: optimized.srcSet.attribute };
+    })
+);
 ---
 
 <Layout title="Home">
@@ -34,6 +57,7 @@ const ticketTiers = (await getCollection('ticketTiers')).sort((a, b) => a.data.o
       ticketUrl={data.ticketUrl}
       expectedParticipants={data.metrics.expectedParticipants}
       partnerNames={partnerNames}
+      marqueeImages={marqueeImages}
     />
     <StageIntro />
     <FocusAreasSection />
