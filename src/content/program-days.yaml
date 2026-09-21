@@ -17,7 +17,7 @@
   order: 2
   date: "24 MAR"
   title: "Main Conference Day"
-  description: "A full day of talks, panels, and hands-on sessions on flow and value in an agentic enterprise."
+  description: "A full day of talks, panels, and hands-on sessions on flow and value in the agentic enterprise."
   image: "../assets/placeholders/cover.svg"
   ctaLabel: "See Schedule"
   ctaHref: "/schedule"
