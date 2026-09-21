@@ -4,16 +4,6 @@
 #
 # NOTE: this is a placeholder skeleton for 2027 — replace times/titles once confirmed.
 
-- id: mixer-welcome
-  day: "2027-04-14"
-  dayLabel: "Pre-Event Mixer"
-  startTime: "18:00"
-  endTime: "20:00"
-  title: "Welcome Mixer"
-  description: "Informal evening to connect with speakers and fellow attendees ahead of the main conference."
-  type: mixer
-  speakerIds: []
-
 - id: registration
   day: "2027-04-15"
   dayLabel: "Main Conference Day"
@@ -28,7 +18,7 @@
   dayLabel: "Main Conference Day"
   startTime: "09:30"
   endTime: "10:15"
-  title: "Opening Keynote: Flow and Value in an Agentic Enterprise"
+  title: "Opening Keynote: Flow and Value in the Agentic Enterprise"
   description: "TODO: confirm keynote speaker and abstract."
   type: keynote
   speakerIds: []
