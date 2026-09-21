@@ -41,7 +41,7 @@
             </div>
           </div>
 
-          <a class="card-cta" :href="ticketUrl">{{ card.ctaLabel }} &rarr;</a>
+          <a class="card-cta" :href="ticketUrl" target="_blank" rel="noopener noreferrer">{{ card.ctaLabel }} &rarr;</a>
 
           <div class="card-notch card-notch-bottom" aria-hidden="true"></div>
         </article>

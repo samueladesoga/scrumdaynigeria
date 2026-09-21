@@ -18,7 +18,7 @@
       <p class="hero-copy">{{ theme }}.</p>
 
       <div class="hero-actions" ref="actionsRef">
-        <a :href="ticketUrl" class="cta cta-primary">
+        <a :href="ticketUrl" target="_blank" rel="noopener noreferrer" class="cta cta-primary">
           <span>Get Tickets</span>
           <svg class="cta-icon cta-icon-ticket" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
             <path d="M2.5 6.2a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1.1a1.25 1.25 0 0 0 0 2.5V11a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V9.8a1.25 1.25 0 0 0 0-2.5V6.2Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
