@@ -31,6 +31,7 @@ const partners = defineCollection({
       tier: z.enum(['platinum', 'gold', 'silver', 'bronze']).optional(),
       logo: image(),
       url: z.string().url(),
+      background: z.string().optional(),
       order: z.number().default(99),
     }),
 });

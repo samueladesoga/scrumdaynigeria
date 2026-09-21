@@ -19,6 +19,7 @@ const partners = (await getCollection('partners')).sort((a, b) => a.data.order -
             rel="noopener noreferrer"
             aria-label={partner.data.name}
             title={partner.data.name}
+            style={partner.data.background ? `background:${partner.data.background}` : undefined}
           >
             <Image class="partner-logo" src={partner.data.logo} alt={partner.data.name} width={320} height={120} />
           </a>
