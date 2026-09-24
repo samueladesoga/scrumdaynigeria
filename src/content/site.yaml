@@ -8,7 +8,7 @@ config:
   displayTime: "9am - 5pm"
   venueName: "Lagos Oriental Hotel"
   venueAddress: "Victoria Island, Lagos"
-  ticketUrl: "https://paystack.shop/pay/sdn2026-group"
+  ticketUrl: "/#tickets" # all "Get Tickets" buttons go to the pricing section; payment links live in ticket-tiers.yaml
   contactEmail: "info@scrumday.ng"
 
   metrics:

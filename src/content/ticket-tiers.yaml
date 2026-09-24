@@ -1,29 +1,59 @@
 # Ticket pricing cards. Group tiers under the same `category`/`categoryLabel`
 # to show them as tabs; with only one category, the tab bar hides itself.
-# TODO: replace price/description with real 2027 pricing.
+#
+# A tier with `bands` gets an attendee-count picker: each band covers `min`–`max` attendees at a
+# per-person `price` and has its own payment page (`url`). Anyone above the last band's `max` is
+# asked to contact us for pricing. Bands must run from 1 upwards with no gaps (the build checks).
+#
+# Any `url: ""` shows a disabled "Available soon" button — paste the real link in to switch it on.
+# Group payment pages need Paystack's quantity field enabled (ideally limited to the band's range).
 
 - id: standard
   order: 1
   category: general
   categoryLabel: "General"
   dates: "15 APR"
-  badge: "TBD"
-  title: "Standard Ticket"
+  title: "Conference Ticket"
   description: "Full access to the main conference day, including talks, panels, sessions, and refreshments."
-  priceLabel: "Standard"
-  priceNote: "Price to be announced"
-  price: "TBD"
-  ctaLabel: "Buy Ticket"
+  currency: NGN
+  ctaLabel: "Continue to payment"
+  bands:
+    - label: "Individual"
+      min: 1
+      max: 1
+      price: 45000
+      url: "" # TODO: Paystack page — Individual, Regular (₦45,000, quantity 1)
+      earlyBird:
+        price: 38000
+        until: 2026-12-31 # last day of early bird; switches to the regular price after this
+        url: "" # TODO: Paystack page — Individual, Early Bird (₦38,000, quantity 1)
+    - label: "Group booking"
+      min: 2
+      max: 5
+      price: 35000
+      url: "" # TODO: Paystack page — Group 2–5 (₦35,000 per ticket, quantity 2–5)
+    - label: "Group booking"
+      min: 6
+      max: 10
+      price: 33000
+      url: "" # TODO: Paystack page — Group 6–10 (₦33,000 per ticket, quantity 6–10)
+    - label: "Group booking"
+      min: 11
+      max: 20
+      price: 30000
+      url: "" # TODO: Paystack page — Group 11–20 (₦30,000 per ticket, quantity 11–20)
 
 - id: hackathon
   order: 2
   category: hackathon
   categoryLabel: "Hackathon"
   dates: "15 APR"
-  badge: "TBD"
-  title: "Hackathon Ticket"
-  description: "Full access to the Hackathon."
-  priceLabel: "Standard"
-  priceNote: "Price to be announced"
-  price: "TBD"
-  ctaLabel: "Buy Ticket"
+  badge: "FREE"
+  title: "Hackathon"
+  description: "Free to attend — registration is required so we can plan teams and space."
+  priceLabel: "Registration"
+  priceNote: "Free, registration required"
+  price: "Free"
+  url: "" # TODO: Google Form registration link
+  ctaLabel: "Register"
+  pendingLabel: "Registration opens soon"

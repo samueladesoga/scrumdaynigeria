@@ -10,6 +10,7 @@ interface Props {
 }
 
 const { nav, ticketUrl } = Astro.props;
+const ticketIsExternal = ticketUrl.startsWith('http');
 ---
 
 <header class="site-header" id="top">
@@ -38,7 +39,7 @@ const { nav, ticketUrl } = Astro.props;
     </nav>
 
     <div class="header-cta">
-      <a href={ticketUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">Tickets</a>
+      <a href={ticketUrl} target={ticketIsExternal ? '_blank' : undefined} rel={ticketIsExternal ? 'noopener noreferrer' : undefined} class="btn-primary">Tickets</a>
     </div>
   </div>
 </header>

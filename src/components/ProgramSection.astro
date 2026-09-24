@@ -4,6 +4,8 @@ import { Image } from 'astro:assets';
 
 const days = (await getCollection('programDays')).sort((a, b) => a.data.order - b.data.order);
 const site = await getEntry('site', 'config');
+const ticketUrl = site?.data.ticketUrl ?? '/#tickets';
+const ticketIsExternal = ticketUrl.startsWith('http');
 ---
 
 <section class="program-stage" id="program" aria-labelledby="program-title">
@@ -28,7 +30,7 @@ const site = await getEntry('site', 'config');
       ))}
     </div>
 
-    <a href={site?.data.ticketUrl} target="_blank" rel="noopener noreferrer" class="invite-btn">Get Tickets</a>
+    <a href={ticketUrl} target={ticketIsExternal ? '_blank' : undefined} rel={ticketIsExternal ? 'noopener noreferrer' : undefined} class="invite-btn">Get Tickets</a>
   </div>
 </section>
 

@@ -20,28 +20,155 @@
       </div>
 
       <div class="ticket-grid" aria-live="polite">
-        <article v-for="card in activeCategory.cards" :key="card.id" class="ticket-card">
+        <article
+          v-for="card in activeCategory.cards"
+          :key="card.id"
+          class="ticket-card"
+          :class="{ 'ticket-card--bands': card.bands }"
+        >
           <div class="card-notch card-notch-top" aria-hidden="true"></div>
           <div class="card-header">
             <p class="card-dates">{{ card.dates }}</p>
-            <p v-if="card.badge" class="card-save">{{ card.badge }}</p>
+            <p v-if="badgeFor(card)" class="card-save">{{ badgeFor(card) }}</p>
           </div>
 
-          <h3 class="card-title">{{ card.title }}</h3>
-          <p class="card-copy">{{ card.description }}</p>
+          <!-- Attendee-count ticket: picker + live price, and the band table alongside. -->
+          <div v-if="card.bands" class="band-layout">
+            <div class="band-main">
+              <h3 class="card-title">{{ card.title }}</h3>
+              <p class="card-copy">{{ card.description }}</p>
 
-          <div class="card-pricing">
-            <div>
-              <p class="price-label">{{ card.priceLabel }}</p>
-              <p v-if="card.priceNote" class="price-note">{{ card.priceNote }}</p>
+              <div class="attendee-picker">
+                <label class="picker-label" :for="`attendees-${card.id}`">How many attendees?</label>
+                <div class="stepper">
+                  <button
+                    type="button"
+                    class="stepper-btn"
+                    aria-label="Fewer attendees"
+                    :disabled="countFor(card) <= 1"
+                    @click="setCount(card, countFor(card) - 1)"
+                  >&minus;</button>
+                  <input
+                    :id="`attendees-${card.id}`"
+                    class="stepper-input"
+                    type="number"
+                    inputmode="numeric"
+                    min="1"
+                    :max="maxCount(card)"
+                    :value="countFor(card)"
+                    @change="setCount(card, $event.target.value)"
+                  />
+                  <button
+                    type="button"
+                    class="stepper-btn"
+                    aria-label="More attendees"
+                    :disabled="countFor(card) >= maxCount(card)"
+                    @click="setCount(card, countFor(card) + 1)"
+                  >+</button>
+                  <span v-if="countFor(card) >= maxCount(card)" class="stepper-plus">or more</span>
+                </div>
+              </div>
+
+              <template v-if="quoteFor(card).band">
+                <div class="card-pricing">
+                  <div>
+                    <p class="price-label">{{ quoteFor(card).band.label }}</p>
+                    <p class="price-note">
+                      <template v-if="quoteFor(card).earlyBirdEnds">Early bird ends {{ quoteFor(card).earlyBirdEnds }}</template>
+                      <template v-else>{{ rangeLabel(quoteFor(card).band) }}</template>
+                    </p>
+                  </div>
+                  <div class="price-values">
+                    <p v-if="quoteFor(card).oldPrice" class="price-old">{{ money(card, quoteFor(card).oldPrice) }}</p>
+                    <p class="price-new">
+                      {{ money(card, quoteFor(card).price) }}<span v-if="countFor(card) > 1" class="price-unit"> / person</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div v-if="countFor(card) > 1" class="price-total">
+                  <span>Total for {{ countFor(card) }} attendees</span>
+                  <strong>{{ money(card, quoteFor(card).price * countFor(card)) }}</strong>
+                </div>
+
+                <a
+                  v-if="quoteFor(card).url"
+                  class="card-cta"
+                  :href="quoteFor(card).url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{{ card.ctaLabel }} &rarr;</a>
+                <span v-else class="card-cta is-pending" aria-disabled="true">{{ card.pendingLabel }}</span>
+
+                <p v-if="countFor(card) > 1" class="cta-hint cta-hint-qty">
+                  <span aria-hidden="true">&#9432;</span>
+                  On the Paystack page, set the quantity to <strong>{{ countFor(card) }}</strong> before you pay.
+                </p>
+              </template>
+
+              <template v-else>
+                <div class="card-pricing quote-pricing">
+                  <p class="price-label">Groups of {{ maxCount(card) }}+</p>
+                  <p class="price-new">Let's talk</p>
+                </div>
+                <a class="card-cta" :href="quoteMailto(card)">Contact us for pricing &rarr;</a>
+                <p class="cta-hint">We'll put together a quote for your team.</p>
+              </template>
             </div>
-            <div class="price-values">
-              <p v-if="card.oldPrice" class="price-old">{{ card.oldPrice }}</p>
-              <p class="price-new">{{ card.price }}</p>
+
+            <div class="band-side">
+              <p class="band-side-title">Pricing per person</p>
+              <ul class="band-list">
+                <li v-for="band in card.bands" :key="band.min">
+                  <button
+                    type="button"
+                    class="band-row"
+                    :class="{ active: quoteFor(card).band === band }"
+                    :aria-pressed="quoteFor(card).band === band"
+                    @click="setCount(card, band.min)"
+                  >
+                    <span class="band-range">{{ rangeLabel(band) }}</span>
+                    <span class="band-price">
+                      <s v-if="priceFor(band).oldPrice">{{ money(card, priceFor(band).oldPrice) }}</s>
+                      {{ money(card, priceFor(band).price) }}
+                    </span>
+                  </button>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    class="band-row"
+                    :class="{ active: !quoteFor(card).band }"
+                    :aria-pressed="!quoteFor(card).band"
+                    @click="setCount(card, maxCount(card))"
+                  >
+                    <span class="band-range">{{ maxCount(card) }}+ people</span>
+                    <span class="band-price band-price-quote">Contact us</span>
+                  </button>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <a class="card-cta" :href="ticketUrl" target="_blank" rel="noopener noreferrer">{{ card.ctaLabel }} &rarr;</a>
+          <!-- Static ticket (fixed price or free registration). -->
+          <template v-else>
+            <h3 class="card-title">{{ card.title }}</h3>
+            <p class="card-copy">{{ card.description }}</p>
+
+            <div class="card-pricing">
+              <div>
+                <p class="price-label">{{ card.priceLabel }}</p>
+                <p v-if="card.priceNote" class="price-note">{{ card.priceNote }}</p>
+              </div>
+              <div class="price-values">
+                <p v-if="card.oldPrice" class="price-old">{{ card.oldPrice }}</p>
+                <p class="price-new">{{ card.price }}</p>
+              </div>
+            </div>
+
+            <a v-if="card.url" class="card-cta" :href="card.url" target="_blank" rel="noopener noreferrer">{{ card.ctaLabel }} &rarr;</a>
+            <span v-else class="card-cta is-pending" aria-disabled="true">{{ card.pendingLabel }}</span>
+          </template>
 
           <div class="card-notch card-notch-bottom" aria-hidden="true"></div>
         </article>
@@ -58,13 +185,22 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 
 const props = defineProps({
   tiers: { type: Array, required: true },
   included: { type: Array, default: () => [] },
-  ticketUrl: { type: String, required: true },
+  contactEmail: { type: String, required: true },
+  eventName: { type: String, default: 'Scrum Day Nigeria' },
+  // Build time, so the server render and hydration agree; swapped for the visitor's clock on
+  // mount so early-bird pricing expires on time even if the site isn't rebuilt.
+  renderedAt: { type: Number, required: true },
   subtitle: { type: String, default: 'Secure your seat for a full day of talks, panels, and hands-on sessions.' },
+});
+
+const now = ref(props.renderedAt);
+onMounted(() => {
+  now.value = Date.now();
 });
 
 const categories = computed(() => {
@@ -80,6 +216,64 @@ const categories = computed(() => {
 
 const activeCategoryIndex = ref(0);
 const activeCategory = computed(() => categories.value[activeCategoryIndex.value] || { cards: [] });
+
+// ---- Attendee-count pricing ------------------------------------------------
+
+const counts = reactive({});
+
+// One past the last band = "N or more", which is the contact-us state.
+const maxCount = (card) => card.bands[card.bands.length - 1].max + 1;
+const countFor = (card) => counts[card.id] ?? 1;
+
+const setCount = (card, value) => {
+  const n = Math.round(Number(value));
+  counts[card.id] = Number.isFinite(n) ? Math.min(Math.max(n, 1), maxCount(card)) : 1;
+};
+
+const priceFor = (band) => {
+  const eb = band.earlyBird;
+  if (eb && now.value < eb.endsAt) {
+    return { price: eb.price, oldPrice: band.price, url: eb.url, earlyBirdEndsAt: eb.endsAt };
+  }
+  return { price: band.price, oldPrice: null, url: band.url, earlyBirdEndsAt: null };
+};
+
+const endDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Lagos' });
+
+const quoteFor = (card) => {
+  const count = countFor(card);
+  const band = card.bands.find((b) => count >= b.min && count <= b.max);
+  if (!band) return { band: null };
+  const p = priceFor(band);
+  return {
+    band,
+    ...p,
+    earlyBirdEnds: p.earlyBirdEndsAt ? endDate.format(p.earlyBirdEndsAt - 1) : null,
+  };
+};
+
+const hasActiveEarlyBird = (card) => card.bands.some((b) => priceFor(b).earlyBirdEndsAt);
+const badgeFor = (card) => (card.bands && hasActiveEarlyBird(card) ? 'EARLY BIRD' : card.badge);
+
+const rangeLabel = (band) =>
+  band.min === band.max ? `${band.min} ${band.min === 1 ? 'person' : 'people'}` : `${band.min}–${band.max} people`;
+
+const formatters = new Map();
+const money = (card, amount) => {
+  if (!formatters.has(card.currency)) {
+    formatters.set(
+      card.currency,
+      new Intl.NumberFormat('en-NG', { style: 'currency', currency: card.currency, maximumFractionDigits: 0 })
+    );
+  }
+  return formatters.get(card.currency).format(amount);
+};
+
+const quoteMailto = (card) => {
+  const subject = `Group booking enquiry: ${maxCount(card)}+ attendees`;
+  const body = `Hello,\n\nWe'd like to book tickets to ${props.eventName} for a group of ___ people. Please send us pricing.\n\nThanks`;
+  return `mailto:${props.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
 </script>
 
 <style scoped>
@@ -345,6 +539,223 @@ const activeCategory = computed(() => categories.value[activeCategoryIndex.value
 
   .price-values {
     text-align: left;
+  }
+}
+
+/* ---- Attendee-count ticket ---------------------------------------------- */
+
+.ticket-card--bands {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 100%;
+  max-width: 860px;
+  padding: 1.3rem 1.4rem 2.4rem;
+}
+
+.band-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 1.6rem;
+  text-align: left;
+}
+
+.attendee-picker {
+  margin-top: 1.2rem;
+}
+
+.picker-label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2e3539;
+}
+
+.stepper {
+  margin-top: 0.55rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stepper-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid #cfd4d6;
+  background: #fff;
+  color: #1e2326;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.stepper-btn:hover:not(:disabled) {
+  border-color: #082f33;
+  background: #f2f5f5;
+}
+
+.stepper-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.stepper-input {
+  width: 4.2rem;
+  height: 2.75rem;
+  border: 1px solid #cfd4d6;
+  border-radius: 10px;
+  text-align: center;
+  font: inherit;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e2326;
+  -moz-appearance: textfield;
+}
+
+.stepper-input::-webkit-outer-spin-button,
+.stepper-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.stepper-btn:focus-visible,
+.stepper-input:focus-visible,
+.band-row:focus-visible {
+  outline: 2px solid var(--brand-primary, #f15b30);
+  outline-offset: 2px;
+}
+
+.stepper-plus {
+  color: #626a71;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.price-unit {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #626a71;
+}
+
+.price-total {
+  margin-top: 0.7rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #373d41;
+  font-size: 0.95rem;
+}
+
+.price-total strong {
+  color: #1e2326;
+  font-size: 1.1rem;
+}
+
+.quote-pricing {
+  align-items: baseline;
+}
+
+.card-cta.is-pending {
+  background: #e3e6e7;
+  color: #6b7378;
+  cursor: not-allowed;
+}
+
+.cta-hint {
+  margin: 0.55rem 0 0;
+  text-align: center;
+  color: #626a71;
+  font-size: 0.85rem;
+}
+
+.cta-hint-qty strong {
+  color: #1e2326;
+}
+
+.band-side {
+  border-left: 1px dotted #d9d9d9;
+  padding-left: 1.6rem;
+}
+
+.band-side-title {
+  margin: 0 0 0.7rem;
+  color: #626a71;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.band-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.band-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #e3e6e7;
+  border-radius: 10px;
+  background: #fafbfb;
+  color: #2e3539;
+  font: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.band-row:hover {
+  border-color: #b9c2c4;
+}
+
+.band-row.active {
+  border-color: var(--brand-primary, #f15b30);
+  background: rgba(241, 91, 48, 0.07);
+}
+
+.band-range {
+  font-weight: 600;
+}
+
+.band-price {
+  font-weight: 800;
+  color: #1e2326;
+  white-space: nowrap;
+}
+
+.band-price s {
+  margin-right: 0.3rem;
+  font-weight: 500;
+  color: #8d9295;
+}
+
+.band-price-quote {
+  color: var(--brand-primary-dark, #d8481f);
+}
+
+@media (max-width: 760px) {
+  .ticket-card--bands {
+    padding: 0.95rem 0.9rem 2.2rem;
+  }
+
+  .band-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .band-side {
+    border-left: 0;
+    border-top: 1px dotted #d9d9d9;
+    padding: 1rem 0 0;
   }
 }
 </style>

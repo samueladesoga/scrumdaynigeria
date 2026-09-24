@@ -129,24 +129,65 @@ const programDays = defineCollection({
     }),
 });
 
+// A payment/registration link, or "" while the page doesn't exist yet (the button then shows
+// `pendingLabel` and is disabled, so nobody lands on a broken page).
+const actionUrl = z.union([z.string().url(), z.literal('')]).default('');
+
+// One price band of an attendee-count ticket: `min`–`max` attendees pay `price` per person via
+// their own payment page. An optional early-bird price/page applies up to and including `until`.
+const priceBand = z.object({
+  label: z.string(), // e.g. "Individual", "Group booking"
+  min: z.number().int().min(1),
+  max: z.number().int().min(1),
+  price: z.number().positive(), // per person, in `currency` units (not kobo)
+  url: actionUrl,
+  earlyBird: z
+    .object({
+      price: z.number().positive(),
+      until: z.coerce.date(), // last day of early-bird pricing (Lagos time)
+      url: actionUrl,
+    })
+    .optional(),
+});
+
 // Ticket tiers shown in the pricing section, grouped by `category`.
+// A tier with `bands` gets an attendee-count picker; one without is a static card.
 const ticketTiers = defineCollection({
   loader: file('./src/content/ticket-tiers.yaml'),
-  schema: z.object({
-    id: z.string(),
-    category: z.string().default('general'), // groups tiers under a tab
-    categoryLabel: z.string().default('General'),
-    dates: z.string(), // e.g. "24 MAR"
-    badge: z.string().optional(), // e.g. "EARLY BIRD"
-    title: z.string(),
-    description: z.string(),
-    priceLabel: z.string().default('Standard'),
-    priceNote: z.string().optional(),
-    oldPrice: z.string().optional(),
-    price: z.string(), // display string — keep as text since currency/format may vary
-    ctaLabel: z.string().default('Buy Ticket'),
-    order: z.number().default(99),
-  }),
+  schema: z
+    .object({
+      id: z.string(),
+      category: z.string().default('general'), // groups tiers under a tab
+      categoryLabel: z.string().default('General'),
+      dates: z.string(), // e.g. "24 MAR"
+      badge: z.string().optional(), // e.g. "FREE"; attendee tiers show "EARLY BIRD" automatically
+      title: z.string(),
+      description: z.string(),
+      currency: z.string().default('NGN'),
+      bands: z.array(priceBand).optional(),
+      // Static-card pricing (ignored when `bands` is set) — display strings.
+      priceLabel: z.string().default('Standard'),
+      priceNote: z.string().optional(),
+      oldPrice: z.string().optional(),
+      price: z.string().optional(),
+      url: actionUrl, // static cards only; attendee tiers use each band's url
+      ctaLabel: z.string().default('Buy Ticket'),
+      pendingLabel: z.string().default('Available soon'), // button text while the url is ""
+      order: z.number().default(99),
+    })
+    .superRefine((tier, ctx) => {
+      // Bands must run contiguously from 1 attendee with no gaps or overlaps.
+      tier.bands?.forEach((band, i) => {
+        const expectedMin = i === 0 ? 1 : tier.bands![i - 1].max + 1;
+        if (band.min !== expectedMin || band.max < band.min) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['bands', i],
+            message: `Band "${band.label}" must start at ${expectedMin} attendee(s) and end at or after its start`,
+          });
+        }
+      });
+    }),
 });
 
 // Full-bleed venue carousel photos.
@@ -173,7 +214,7 @@ const site = defineCollection({
     displayTime: z.string(),
     venueName: z.string(),
     venueAddress: z.string(),
-    ticketUrl: z.string().url(),
+    ticketUrl: z.string(), // where every "Get Tickets" button points — an on-page anchor or an external URL
     contactEmail: z.string().email(),
     metrics: z.object({
       days: z.string(),

@@ -4,7 +4,7 @@
       <img class="logo-image" src="/brand-icon.png" alt="Scrum Day Nigeria" />
     </a>
     <a v-for="item in nav" :key="item.href" :href="item.href" class="nav-pill">{{ item.label }}</a>
-    <a :href="ticketUrl" target="_blank" rel="noopener noreferrer" class="nav-pill nav-pill-cta">Tickets</a>
+    <a :href="ticketUrl" :target="ticketUrl.startsWith('http') ? '_blank' : undefined" :rel="ticketUrl.startsWith('http') ? 'noopener noreferrer' : undefined" class="nav-pill nav-pill-cta">Tickets</a>
   </nav>
 </template>
 

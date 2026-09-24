@@ -29,6 +29,20 @@ const heroPartners = await Promise.all(
 );
 
 const ticketTiers = (await getCollection('ticketTiers')).sort((a, b) => a.data.order - b.data.order);
+// Early bird runs through the whole of its `until` day in Lagos (UTC+1), i.e. ends at 23:00 UTC.
+const LAGOS_END_OF_DAY_MS = 23 * 60 * 60 * 1000;
+const tierProps = ticketTiers.map((t) => ({
+  id: t.id,
+  ...t.data,
+  bands: t.data.bands?.map(({ earlyBird, ...band }) => ({
+    ...band,
+    earlyBird: earlyBird && {
+      price: earlyBird.price,
+      url: earlyBird.url,
+      endsAt: earlyBird.until.getTime() + LAGOS_END_OF_DAY_MS,
+    },
+  })),
+}));
 
 // Drop event photos into src/assets/hero-marquee/ to have them picked up here automatically.
 // Resized/re-encoded here (instead of imported raw into Hero.vue) since the marquee only ever
@@ -75,6 +89,13 @@ const marqueeImages = await Promise.all(
     <PartnersShowcase />
     <TestimonialsMarquee />
     <VenueCarousel />
-    <TicketsSection client:load tiers={ticketTiers.map((t) => ({ id: t.id, ...t.data }))} included={data.ticketsIncluded} ticketUrl={data.ticketUrl} />
+    <TicketsSection
+      client:load
+      tiers={tierProps}
+      included={data.ticketsIncluded}
+      contactEmail={data.contactEmail}
+      eventName={data.eventName}
+      renderedAt={Date.now()}
+    />
   </main>
 </Layout>
