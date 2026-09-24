@@ -1,54 +1,98 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 
 const speakers = (await getCollection('speakers')).sort((a, b) => a.data.order - b.data.order);
+const hasSpeakers = speakers.length > 0;
+
+const site = await getEntry('site', 'config');
+const cfsConfig = site?.data.callForSpeakers;
+const cfs = cfsConfig && cfsConfig.open && cfsConfig.deadline >= new Date() ? cfsConfig : undefined;
 ---
 
 <section class="speakers-showcase" id="speakers" aria-labelledby="speakers-title">
   <div class="container speakers-wrap">
-    <div class="section-head">
-      <div class="section-copy">
-        <h2 id="speakers-title">Curated For What<br />Matters Now In<br />Product &amp; Delivery</h2>
-        <p>
-          Every speaker is selected for real-world outcomes, not hype. Meet practitioners solving flow, value, and delivery at scale.
-        </p>
+    {!hasSpeakers && cfs ? (
+      <div class="cfs-feature">
+        <div class="cfs-copy">
+          <p class="cfs-eyebrow"><span class="cfs-pulse" aria-hidden="true"></span>Call for Speakers is open</p>
+          <h2 id="speakers-title">{cfs.heading}</h2>
+          <p class="cfs-body">{cfs.body}</p>
+          <div class="cfs-actions">
+            <a class="cfs-btn" href={cfs.url} target="_blank" rel="noopener noreferrer">
+              {cfs.ctaLabel} <span aria-hidden="true">&rarr;</span>
+            </a>
+            <p class="cfs-deadline">Submissions close <strong>{cfs.displayDeadline}</strong></p>
+          </div>
+        </div>
+
+        <aside class="cfs-card" aria-label="What we're looking for">
+          <p class="cfs-card-label">What we're looking for</p>
+          <ol class="cfs-list">
+            {cfs.lookingFor.map((item) => <li>{item}</li>)}
+          </ol>
+          <a class="cfs-card-link" href="#focus-areas">Every talk is shortlisted against one of our six focus areas &uarr;</a>
+        </aside>
       </div>
-    </div>
-
-    <div class="carousel-shell" data-speaker-carousel>
-      <button class="carousel-nav carousel-nav-prev" type="button" data-dir="prev" aria-label="Previous speakers">
-        <span aria-hidden="true">&larr;</span>
-      </button>
-
-      <div class="speakers-viewport">
-        <div class="speakers-track" data-speaker-track role="list" aria-label="Featured conference speakers">
-          {speakers.map((speaker) => (
-            <article class="speaker-card" role="listitem">
-              <div class="portrait-wrap">
-                <Image src={speaker.data.image} alt={speaker.data.name} width={400} height={440} loading="lazy" />
-              </div>
-
-              <div class="card-meta">
-                <h3>{speaker.data.name}</h3>
-                <p class="role">{speaker.data.role}</p>
-
-                <div class="company-row">
-                  <span class="company-logo" aria-hidden="true">{speaker.data.company.charAt(0)}</span>
-                  <span class="company-name">{speaker.data.company}</span>
-                </div>
-              </div>
-            </article>
-          ))}
+    ) : (
+      <>
+      <div class="section-head">
+        <div class="section-copy">
+          <h2 id="speakers-title">Curated For What<br />Matters Now In<br />Product &amp; Delivery</h2>
+          <p>
+            Every speaker is selected for real-world outcomes, not hype. Meet practitioners solving flow, value, and delivery at scale.
+          </p>
         </div>
       </div>
 
-      <button class="carousel-nav carousel-nav-next" type="button" data-dir="next" aria-label="Next speakers">
-        <span aria-hidden="true">&rarr;</span>
-      </button>
-    </div>
+      <div class="carousel-shell" data-speaker-carousel>
+        <button class="carousel-nav carousel-nav-prev" type="button" data-dir="prev" aria-label="Previous speakers">
+          <span aria-hidden="true">&larr;</span>
+        </button>
 
-    <a class="see-all-btn" href="/speakers">See all Speakers &rarr;</a>
+        <div class="speakers-viewport">
+          <div class="speakers-track" data-speaker-track role="list" aria-label="Featured conference speakers">
+            {speakers.map((speaker) => (
+              <article class="speaker-card" role="listitem">
+                <div class="portrait-wrap">
+                  <Image src={speaker.data.image} alt={speaker.data.name} width={400} height={440} loading="lazy" />
+                </div>
+
+                <div class="card-meta">
+                  <h3>{speaker.data.name}</h3>
+                  <p class="role">{speaker.data.role}</p>
+
+                  <div class="company-row">
+                    <span class="company-logo" aria-hidden="true">{speaker.data.company.charAt(0)}</span>
+                    <span class="company-name">{speaker.data.company}</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <button class="carousel-nav carousel-nav-next" type="button" data-dir="next" aria-label="Next speakers">
+          <span aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
+
+      <a class="see-all-btn" href="/speakers">See all Speakers &rarr;</a>
+
+      {cfs && (
+        <div class="cfs-band">
+          <div class="cfs-band-copy">
+            <p class="cfs-card-label">Call for Speakers is open</p>
+            <h3>Want to join them on stage?</h3>
+            <p class="cfs-band-deadline">Submissions close <strong>{cfs.displayDeadline}</strong></p>
+          </div>
+          <a class="cfs-btn" href={cfs.url} target="_blank" rel="noopener noreferrer">
+            {cfs.ctaLabel} <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      )}
+      </>
+    )}
   </div>
 </section>
 
@@ -362,6 +406,211 @@ const speakers = (await getCollection('speakers')).sort((a, b) => a.data.order -
 
   .see-all-btn {
     margin-top: 1.35rem;
+  }
+}
+
+/* ---- Call for speakers ------------------------------------------------- */
+
+.cfs-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.cfs-eyebrow {
+  margin: 0 0 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.42rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(241, 91, 48, 0.1);
+  color: var(--brand-primary-dark, #d8481f);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cfs-pulse {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--brand-primary, #f15b30);
+  box-shadow: 0 0 0 0 rgba(241, 91, 48, 0.55);
+  animation: cfs-pulse 1.8s ease-out infinite;
+}
+
+@keyframes cfs-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(241, 91, 48, 0.55); }
+  100% { box-shadow: 0 0 0 0.6rem rgba(241, 91, 48, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cfs-pulse { animation: none; }
+}
+
+.cfs-copy h2 {
+  margin: 0;
+  max-width: 13ch;
+  font-size: clamp(2.2rem, 4.9vw, 4.25rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  color: #202328;
+  font-weight: 500;
+  font-family: "Space Grotesk", "IBM Plex Sans", "Segoe UI", sans-serif;
+}
+
+.cfs-body {
+  margin: 1.15rem 0 0;
+  max-width: 46ch;
+  color: #31363d;
+  font-size: clamp(1.02rem, 1.1vw, 1.18rem);
+  line-height: 1.55;
+}
+
+.cfs-actions {
+  margin-top: 1.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem 1.4rem;
+}
+
+.cfs-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.95rem 1.5rem;
+  border-radius: 999px;
+  background: var(--brand-primary, #f15b30);
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 10px 22px rgba(241, 91, 48, 0.22);
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.cfs-btn:hover {
+  background: var(--brand-primary-dark, #d8481f);
+  transform: translateY(-1px);
+}
+
+.cfs-deadline {
+  margin: 0;
+  color: #555b66;
+  font-size: 0.95rem;
+}
+
+.cfs-deadline strong {
+  color: #202328;
+}
+
+/* Dark-teal card floating on the white section — same palette as the dark bands. */
+.cfs-card {
+  border-radius: 18px;
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+  background: linear-gradient(160deg, var(--brand-teal, #0e494f) 0%, #0a3438 55%, var(--brand-teal-deep, #082f33) 100%);
+  color: #eef4f2;
+  box-shadow: 0 22px 48px rgba(8, 47, 51, 0.22);
+}
+
+.cfs-card-label {
+  margin: 0 0 1.1rem;
+  color: var(--brand-lime, #d1e27e);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cfs-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: cfs;
+  display: grid;
+  gap: 0.95rem;
+}
+
+.cfs-list li {
+  counter-increment: cfs;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding-bottom: 0.95rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: "Space Grotesk", "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: clamp(1.02rem, 1.25vw, 1.2rem);
+  line-height: 1.3;
+}
+
+.cfs-list li::before {
+  content: counter(cfs, decimal-leading-zero);
+  color: rgba(238, 244, 242, 0.5);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.cfs-card-link {
+  display: inline-block;
+  margin-top: 1.2rem;
+  color: #eef4f2;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-color: rgba(238, 244, 242, 0.4);
+}
+
+.cfs-card-link:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Compact dark card under the carousel once real speakers are announced. */
+.cfs-band {
+  margin-top: 2.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem 2rem;
+  border-radius: 18px;
+  padding: clamp(1.4rem, 3vw, 2rem) clamp(1.4rem, 3.5vw, 2.6rem);
+  background: linear-gradient(160deg, var(--brand-teal, #0e494f) 0%, #0a3438 55%, var(--brand-teal-deep, #082f33) 100%);
+  color: #eef4f2;
+  box-shadow: 0 22px 48px rgba(8, 47, 51, 0.18);
+}
+
+.cfs-band .cfs-card-label {
+  margin-bottom: 0.55rem;
+}
+
+.cfs-band h3 {
+  margin: 0;
+  font-family: "Space Grotesk", "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-size: clamp(1.45rem, 2.4vw, 2.1rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.cfs-band-deadline {
+  margin: 0.55rem 0 0;
+  color: rgba(238, 244, 242, 0.75);
+  font-size: 0.95rem;
+}
+
+.cfs-band-deadline strong {
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .cfs-feature {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 </style>

@@ -17,8 +17,16 @@ const site = await getEntry('site', 'config');
 if (!site) throw new Error('Missing site config entry (src/content/site.yaml)');
 const { data } = site;
 
-const partners = await getCollection('partners');
-const partnerNames = partners.filter((p) => p.data.type === 'strategic').map((p) => p.data.name);
+// Partners flagged `hero: true` get their logo in the hero's "In partnership with" row.
+const heroPartners = await Promise.all(
+  (await getCollection('partners'))
+    .filter((p) => p.data.hero)
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(async (p) => {
+      const logo = await getImage({ src: p.data.logo, height: 80 });
+      return { name: p.data.name, url: p.data.url, logo: logo.src, background: p.data.background };
+    })
+);
 
 const ticketTiers = (await getCollection('ticketTiers')).sort((a, b) => a.data.order - b.data.order);
 
@@ -55,8 +63,9 @@ const marqueeImages = await Promise.all(
       venueAddress={data.venueAddress}
       theme={data.theme}
       ticketUrl={data.ticketUrl}
+      heroPartners={heroPartners}
+      partnersNote={data.heroPartnersNote}
       expectedParticipants={data.metrics.expectedParticipants}
-      partnerNames={partnerNames}
       marqueeImages={marqueeImages}
     />
     <StageIntro />

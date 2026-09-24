@@ -25,6 +25,7 @@ the `partners` schema in `src/content.config.ts`.
    tier: "gold" # optional, sponsors only
    logo: "../../assets/partners/<kebab-name>.svg"
    url: "https://partner-website.com"
+   hero: true # optional — also show the logo in the homepage hero's "In partnership with" row
    order: 3
    ---
    ```

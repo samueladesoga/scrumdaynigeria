@@ -32,6 +32,7 @@ const partners = defineCollection({
       logo: image(),
       url: z.string().url(),
       background: z.string().optional(),
+      hero: z.boolean().default(false), // also show this logo in the homepage hero's "In partnership with" row
       order: z.number().default(99),
     }),
 });
@@ -200,6 +201,23 @@ const site = defineCollection({
         href: z.string(),
       })
     ),
+    // Call for speakers — shown in the homepage speakers section while `open` is true and the
+    // deadline hasn't passed (checked at build time). Omit the block entirely to hide it.
+    callForSpeakers: z
+      .object({
+        open: z.boolean().default(true),
+        url: z.string().url(),
+        deadline: z.coerce.date(),
+        displayDeadline: z.string(),
+        heading: z.string(),
+        body: z.string(),
+        lookingFor: z.array(z.string()).default([]),
+        ctaLabel: z.string().default('Submit a Talk'),
+      })
+      .optional(),
+    // Fallback text after "In partnership with" in the hero, shown until a partner has `hero: true`
+    // (then their logos replace it). Omit to hide the line while no hero partners exist.
+    heroPartnersNote: z.string().optional(),
     highlightsVideoId: z.string().optional(), // YouTube video id for the "aftermovie" card; omit to hide it
     ticketsIncluded: z.array(z.string()).default([]),
   }),

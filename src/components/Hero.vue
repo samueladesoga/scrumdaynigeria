@@ -35,11 +35,23 @@
 
       <p class="hero-subcopy">{{ expectedParticipants }} people expected to attend</p>
 
-      <div v-if="partnerNames.length" class="support-row" aria-label="Supporting partners">
+      <div v-if="heroPartners.length || partnersNote" class="support-row" aria-label="Supporting partners">
         <span class="support-label">In partnership with</span>
-        <div class="support-logos">
-          <span v-for="name in partnerNames" :key="name">{{ name }}</span>
+        <div v-if="heroPartners.length" class="support-logos">
+          <a
+            v-for="partner in heroPartners"
+            :key="partner.name"
+            :href="partner.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="support-logo"
+            :class="{ 'has-bg': partner.background }"
+            :style="partner.background ? { background: partner.background } : undefined"
+          >
+            <img :src="partner.logo" :alt="partner.name" loading="lazy" decoding="async" />
+          </a>
         </div>
+        <span v-else class="support-pending">{{ partnersNote }}</span>
       </div>
     </div>
 
@@ -75,8 +87,9 @@ const props = defineProps({
   venueAddress: { type: String, required: true },
   theme: { type: String, required: true },
   ticketUrl: { type: String, required: true },
+  heroPartners: { type: Array, default: () => [] },
+  partnersNote: { type: String, default: '' },
   expectedParticipants: { type: String, required: true },
-  partnerNames: { type: Array, default: () => [] },
   marqueeImages: { type: Array, default: () => [] },
 });
 
@@ -346,12 +359,15 @@ onMounted(() => {
   font-size: 0.92rem;
 }
 
+
+
+
 .support-row {
   margin-top: 1.55rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
@@ -364,11 +380,50 @@ onMounted(() => {
 
 .support-logos {
   display: flex;
-  gap: 1.2rem;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.6rem;
+}
+
+.support-logo {
+  display: inline-flex;
+  align-items: center;
+  transition: opacity 180ms ease;
+}
+
+.support-logo:hover {
+  opacity: 0.75;
+}
+
+/* Logos that need their brand colour behind them (e.g. MTN yellow) get a small pill. */
+.support-logo.has-bg {
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+}
+
+.support-logo img {
+  display: block;
+  height: 1.75rem;
+  width: auto;
+  max-width: 9rem;
+  object-fit: contain;
+}
+
+.support-pending {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
   color: #303639;
   font-weight: 700;
+  font-style: italic;
+}
+
+.support-pending::before {
+  content: "";
+  width: 1.4rem;
+  height: 1px;
+  background: #b9bfc2;
 }
 
 .hero-marquee {

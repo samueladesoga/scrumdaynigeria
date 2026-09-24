@@ -46,6 +46,24 @@ config:
     - label: Blog
       href: /blog
 
+  # Set open: false (or delete this block) once submissions close.
+  callForSpeakers:
+    open: true
+    url: "https://docs.google.com/forms/d/e/1FAIpQLScb5TnoAwGqHqHyFeAdiB5mFF6lHa4hYys9BHZeoUwDRRUAtQ/viewform"
+    deadline: 2026-12-11
+    displayDeadline: "11th December, 2026"
+    heading: "Your Story Belongs On This Stage"
+    body: "We're looking for practitioners from across the agentic enterprise — individuals, teams and organisations weaving AI into how work gets done. Bring real implementations, not slideware."
+    lookingFor:
+      - "Real implementations — the wins and the failures"
+      - "A clear line to flow and value creation"
+      - "Practical lessons attendees can apply on Monday"
+    ctaLabel: "Submit a Talk"
+
+  # Shown after "In partnership with" in the hero until a partner file has `hero: true` — their
+  # logos then replace this text. Delete this line to hide the row while there are no hero partners.
+  heroPartnersNote: "To be announced"
+
   highlightsVideoId: "N60IdjHL_4k"
 
   ticketsIncluded:

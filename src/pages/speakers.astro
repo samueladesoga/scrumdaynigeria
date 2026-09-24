@@ -6,6 +6,8 @@ import { Image } from 'astro:assets';
 
 const site = await getEntry('site', 'config');
 const speakers = (await getCollection('speakers')).sort((a, b) => a.data.order - b.data.order);
+const cfsConfig = site!.data.callForSpeakers;
+const cfs = cfsConfig && cfsConfig.open && cfsConfig.deadline >= new Date() ? cfsConfig : undefined;
 ---
 
 <Layout title="All Speakers">
@@ -39,7 +41,15 @@ const speakers = (await getCollection('speakers')).sort((a, b) => a.data.order -
       </div>
 
       {speakers.length === 0 && (
-        <p class="container empty-note">No speakers announced yet — check back soon.</p>
+        <p class="container empty-note">
+          No speakers announced yet — check back soon.
+          {cfs && (
+            <>
+              {' '}Want to be one of them?{' '}
+              <a href={cfs.url} target="_blank" rel="noopener noreferrer">{cfs.ctaLabel} by {cfs.displayDeadline} &rarr;</a>
+            </>
+          )}
+        </p>
       )}
     </section>
   </main>
@@ -145,6 +155,11 @@ const speakers = (await getCollection('speakers')).sort((a, b) => a.data.order -
 .empty-note {
   color: #5b6167;
   padding: 2rem 0;
+}
+
+.empty-note a {
+  color: var(--brand-primary-dark, #d8481f);
+  font-weight: 700;
 }
 
 @media (max-width: 1100px) {
