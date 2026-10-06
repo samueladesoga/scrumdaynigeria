@@ -22,26 +22,26 @@
       min: 1
       max: 1
       price: 45000
-      url: "" # TODO: Paystack page — Individual, Regular (₦45,000, quantity 1)
+      url: "https://paystack.shop/pay/sdn2027-individual"
       earlyBird:
         price: 38000
         until: 2026-12-31 # last day of early bird; switches to the regular price after this
-        url: "" # TODO: Paystack page — Individual, Early Bird (₦38,000, quantity 1)
+        url: "https://paystack.shop/pay/sdn2027-early-bird"
     - label: "Group booking"
       min: 2
       max: 5
       price: 35000
-      url: "" # TODO: Paystack page — Group 2–5 (₦35,000 per ticket, quantity 2–5)
+      url: "https://paystack.shop/pay/sdn2027-two-five"
     - label: "Group booking"
       min: 6
       max: 10
       price: 33000
-      url: "" # TODO: Paystack page — Group 6–10 (₦33,000 per ticket, quantity 6–10)
+      url: "https://paystack.shop/pay/sdn2027-six-ten"
     - label: "Group booking"
       min: 11
       max: 20
       price: 30000
-      url: "" # TODO: Paystack page — Group 11–20 (₦30,000 per ticket, quantity 11–20)
+      url: "https://paystack.shop/pay/sdn2027-eleven-twenty"
 
 - id: hackathon
   order: 2
