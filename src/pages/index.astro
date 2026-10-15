@@ -8,6 +8,7 @@ import ProgramSection from '../components/ProgramSection.astro';
 import SpeakersShowcase from '../components/SpeakersShowcase.astro';
 import PartnersShowcase from '../components/PartnersShowcase.astro';
 import TestimonialsMarquee from '../components/TestimonialsMarquee.astro';
+import PressSection from '../components/PressSection.astro';
 import VenueCarousel from '../components/VenueCarousel.astro';
 import TicketsSection from '../components/TicketsSection.vue';
 import { getCollection, getEntry } from 'astro:content';
@@ -88,6 +89,7 @@ const marqueeImages = await Promise.all(
     <SpeakersShowcase />
     <PartnersShowcase />
     <TestimonialsMarquee />
+    <PressSection />
     <VenueCarousel />
     <TicketsSection
       client:load

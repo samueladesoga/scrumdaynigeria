@@ -64,6 +64,21 @@ const blog = defineCollection({
     }),
 });
 
+// Independent press coverage, shown as the homepage "In the News" section. Distinct from
+// `partners` with type `media` — those are paid/arranged partnerships, these are earned articles.
+const press = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/press' }),
+  schema: ({ image }) =>
+    z.object({
+      outlet: z.string(), // e.g. "The Guardian" — shown in the "Read full article on …" link
+      headline: z.string(),
+      url: z.string().url(),
+      image: image(), // the article's own thumbnail (its og:image), saved under src/assets/press/
+      date: z.coerce.date().optional(),
+      order: z.number().default(99),
+    }),
+});
+
 // ---------------------------------------------------------------------------
 // Structured data that doesn't need individual files — single YAML sources.
 // ---------------------------------------------------------------------------
@@ -271,6 +286,7 @@ export const collections = {
   speakers,
   partners,
   testimonials,
+  press,
   blog,
   agenda,
   learningTracks,
