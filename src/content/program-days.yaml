@@ -4,7 +4,7 @@
 
 - id: mixer
   order: 1
-  date: "23 MAR"
+  date: "14 APR 2027"
   title: "Pre-Event Mixer"
   description: "An informal evening for speakers and leaders to connect ahead of the main conference."
   image: "../assets/program/mixer-dinner.jpg"
@@ -16,7 +16,7 @@
 
 - id: main-day
   order: 2
-  date: "24 MAR"
+  date: "15 APR 2027"
   title: "Main Conference Day"
   description: "A full day of talks, panels, and hands-on sessions on flow and value in the agentic enterprise."
   image: "../assets/program/main-day-audience.jpg"
@@ -28,7 +28,7 @@
 
 - id: hackathon
   order: 3
-  date: "24 MAR"
+  date: "15 APR 2027"
   title: "Hackathon"
   description: "A half-day hackathon where attendees can collaborate on agentic projects and showcase their skills."
   image: "../assets/program/hackathon-collaboration.jpg"

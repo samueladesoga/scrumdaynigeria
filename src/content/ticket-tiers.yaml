@@ -12,7 +12,7 @@
   order: 1
   category: general
   categoryLabel: "General"
-  dates: "15 APR"
+  dates: "15 APR 2027"
   title: "Conference Ticket"
   description: "Full access to the main conference day, including talks, panels, sessions, and refreshments."
   currency: NGN
@@ -47,7 +47,7 @@
   order: 2
   category: hackathon
   categoryLabel: "Hackathon"
-  dates: "15 APR"
+  dates: "15 APR 2027"
   badge: "FREE"
   title: "Hackathon"
   description: "Free to attend — registration is required so we can plan teams and space."

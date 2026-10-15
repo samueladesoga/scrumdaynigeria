@@ -5,11 +5,13 @@ interface Props {
     venueName: string;
     venueAddress: string;
     contactEmail: string;
+    eventDate: Date;
   };
 }
 
 const { site } = Astro.props;
-const year = new Date().getFullYear();
+// Match the edition year in the branding (e.g. "Scrum Day Nigeria 2027"), not the build year.
+const year = site.eventDate.getUTCFullYear();
 ---
 
 <footer class="site-footer" id="contact">
