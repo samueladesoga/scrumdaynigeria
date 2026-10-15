@@ -17,7 +17,16 @@ const ticketIsExternal = ticketUrl.startsWith('http');
         <article class="program-card day-card" style={`--card-delay: ${index * 0.08}s;`}>
           <p class="program-date">{day.data.date}</p>
           <h3>{day.data.title}</h3>
-          <Image src={day.data.image} alt={day.data.title} width={800} height={480} loading="lazy" />
+          <Image
+            src={day.data.image}
+            alt={day.data.imageAlt ?? day.data.title}
+            width={800}
+            height={534}
+            widths={[400, 600, 800]}
+            sizes="(max-width: 700px) calc(100vw - 2rem), 400px"
+            loading="lazy"
+            decoding="async"
+          />
           <p class="program-desc">{day.data.description}</p>
           <a href={day.data.ctaHref} class="program-btn">{day.data.ctaLabel}</a>
           {(day.data.spotsLabel || day.data.priceLabel) && (
@@ -171,7 +180,8 @@ const ticketIsExternal = ticketUrl.startsWith('http');
 
 .program-card img {
   width: 100%;
-  height: 165px;
+  height: auto;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
   border-radius: 10px;
   margin-top: 0.7rem;
@@ -257,10 +267,6 @@ const ticketIsExternal = ticketUrl.startsWith('http');
 @media (max-width: 700px) {
   .program-grid {
     grid-template-columns: 1fr;
-  }
-
-  .program-card img {
-    height: 210px;
   }
 }
 

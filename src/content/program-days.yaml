@@ -1,13 +1,14 @@
 # Homepage "program" cards (dark stage section). Keep this to 2-3 entries —
 # it's a summary, not the full agenda (see agenda/agenda.yaml for that).
-# TODO: swap `image` for a real photo once available.
+# Photos live in src/assets/program/; `imageAlt` describes the photo for screen readers.
 
 - id: mixer
   order: 1
   date: "23 MAR"
   title: "Pre-Event Mixer"
   description: "An informal evening for speakers and leaders to connect ahead of the main conference."
-  image: "../assets/placeholders/cover.svg"
+  image: "../assets/program/mixer-dinner.jpg"
+  imageAlt: "Speakers and leaders smiling together over dinner at the pre-event mixer"
   ctaLabel: "More Info"
   ctaHref: "/schedule"
   spotsLabel: "Strictly by Invitation"
@@ -18,7 +19,8 @@
   date: "24 MAR"
   title: "Main Conference Day"
   description: "A full day of talks, panels, and hands-on sessions on flow and value in the agentic enterprise."
-  image: "../assets/placeholders/cover.svg"
+  image: "../assets/program/main-day-audience.jpg"
+  imageAlt: "A full ballroom of attendees listening to a session at Scrum Day Nigeria"
   ctaLabel: "See Schedule"
   ctaHref: "/schedule"
   spotsLabel: "500+ Spots"
@@ -29,7 +31,8 @@
   date: "24 MAR"
   title: "Hackathon"
   description: "A half-day hackathon where attendees can collaborate on agentic projects and showcase their skills."
-  image: "../assets/placeholders/cover.svg"
+  image: "../assets/program/hackathon-collaboration.jpg"
+  imageAlt: "Attendees collaborating around a table during a hands-on session"
   ctaLabel: "See Schedule"
   ctaHref: "/schedule"
   spotsLabel: "100 Spots"

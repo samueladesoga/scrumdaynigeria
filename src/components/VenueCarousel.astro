@@ -14,7 +14,19 @@ const mapsUrl = `https://maps.google.com/?q=${mapsQuery}`;
     <div class="venue-slides" aria-live="polite">
       {slides.map((slide, index) => (
         <figure class:list={["venue-slide", index === 0 && "is-active"]} aria-hidden={index === 0 ? 'false' : 'true'}>
-          <Image src={slide.data.image} alt={slide.data.alt} width={1800} height={1200} class="slide-img" />
+          <Image
+            src={slide.data.image}
+            alt={slide.data.alt}
+            width={2400}
+            height={1600}
+            widths={[640, 960, 1280, 1600, 1920, 2400]}
+            sizes="100vw"
+            quality={85}
+            loading="lazy"
+            decoding="async"
+            class="slide-img"
+            style={`object-position: ${slide.data.focus};`}
+          />
         </figure>
       ))}
     </div>
@@ -87,8 +99,10 @@ const mapsUrl = `https://maps.google.com/?q=${mapsQuery}`;
   position: relative;
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  min-height: 100vh;
-  height: 100vh;
+  /* Never taller than the photos' own 3:2 ratio, so the sides are never cropped;
+     on wider screens only top/bottom trim, steered by each slide's `focus`. */
+  height: min(100vh, 66.667vw);
+  min-height: 560px;
   overflow: hidden;
 }
 
@@ -205,9 +219,18 @@ const mapsUrl = `https://maps.google.com/?q=${mapsQuery}`;
 }
 
 @media (max-width: 900px) {
+  /* Stack: the full, uncropped photo first, then the venue card beneath it. */
   .venue-fullbleed {
-    min-height: auto;
-    height: clamp(620px, 92vh, 840px);
+    height: auto;
+    min-height: 0;
+    padding-bottom: 2.5rem;
+  }
+
+  .venue-slides {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
   }
 
   .venue-card {
@@ -215,18 +238,18 @@ const mapsUrl = `https://maps.google.com/?q=${mapsQuery}`;
     right: auto;
     top: auto;
     transform: none;
-    margin: 9.5rem auto 2.5rem;
+    margin: -2rem auto 0;
+  }
+
+  .venue-dots {
+    top: calc(66.667vw - 3.5rem);
+    bottom: auto;
   }
 }
 
 @media (max-width: 680px) {
-  .venue-fullbleed {
-    height: 600px;
-  }
-
   .venue-card {
     width: calc(100% - 1.1rem);
-    margin-top: 10.4rem;
   }
 
   .venue-card h2 {

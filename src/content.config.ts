@@ -121,6 +121,7 @@ const programDays = defineCollection({
       title: z.string(),
       description: z.string(),
       image: image(),
+      imageAlt: z.string().optional(),
       ctaLabel: z.string().default('More Info'),
       ctaHref: z.string().default('/schedule'),
       spotsLabel: z.string().optional(), // e.g. "200+ Spots"
@@ -198,6 +199,8 @@ const venuePhotos = defineCollection({
       id: z.string(),
       image: image(),
       alt: z.string(),
+      // CSS object-position: which part of the photo to keep when the screen trims it.
+      focus: z.string().default('50% 50%'),
       order: z.number().default(99),
     }),
 });
