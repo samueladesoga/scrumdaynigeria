@@ -80,6 +80,7 @@ const articles = (await getCollection('press')).sort((a, b) => a.data.order - b.
 }
 
 .press-card {
+  position: relative; /* contains the absolutely-positioned .sr-only label so it can't widen the page */
   display: flex;
   flex-direction: column;
   width: 100%;

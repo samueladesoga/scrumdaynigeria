@@ -183,6 +183,7 @@ onMounted(() => {
   background: #ffffff;
   position: relative;
   overflow: visible;
+  overflow-x: clip; /* the decorative radials bleed past the right edge on phones */
   min-height: 100vh;
   display: flex;
   flex-direction: column;

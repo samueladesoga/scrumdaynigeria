@@ -28,7 +28,7 @@ const ticketIsExternal = ticketUrl.startsWith('http');
       </span>
     </div>
 
-    <nav aria-label="Main navigation" class="main-nav">
+    <nav aria-label="Main navigation" class="main-nav" id="main-nav">
       <ul class="nav-list">
         {nav.map((item) => (
           <li>
@@ -40,9 +40,30 @@ const ticketIsExternal = ticketUrl.startsWith('http');
 
     <div class="header-cta">
       <a href={ticketUrl} target={ticketIsExternal ? '_blank' : undefined} rel={ticketIsExternal ? 'noopener noreferrer' : undefined} class="btn-primary">Tickets</a>
+      <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">
+        <span class="menu-icon" aria-hidden="true"></span>
+      </button>
     </div>
   </div>
 </header>
+
+<script>
+  // Phone-width menu: the toggle only shows below 768px (see styles).
+  const header = document.querySelector('.site-header');
+  const toggle = header?.querySelector<HTMLButtonElement>('.menu-toggle');
+
+  const setOpen = (open: boolean) => {
+    header?.classList.toggle('is-open', open);
+    toggle?.setAttribute('aria-expanded', String(open));
+    toggle?.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  };
+
+  toggle?.addEventListener('click', () => setOpen(!header?.classList.contains('is-open')));
+  header?.querySelectorAll('.nav-list a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setOpen(false);
+  });
+</script>
 
 <style>
 .site-header {
@@ -175,39 +196,116 @@ const ticketIsExternal = ticketUrl.startsWith('http');
   transform: translateY(-1px);
 }
 
+.menu-toggle {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .header-wrap {
-    gap: 1rem;
+    position: relative;
+    gap: 0.75rem;
+    min-height: 64px;
+    padding: 0 1rem;
   }
 
   .organizer-credit {
     display: none;
   }
 
+  /* Links collapse into a dropdown under the header, opened by the menu button. */
   .main-nav {
-    margin: 0 1rem;
-    flex: 1;
-    overflow-x: auto;
-    scrollbar-width: none;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0.5rem 1rem 1rem;
+    background: #ffffff;
+    border-bottom: 1px solid #ececec;
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.1);
   }
 
-  .main-nav::-webkit-scrollbar {
-    display: none;
+  .site-header.is-open .main-nav {
+    display: block;
   }
 
   .nav-list {
-    gap: 0.3rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.15rem;
   }
 
   .nav-list li a {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8rem;
-    white-space: nowrap;
+    display: block;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    box-shadow: none;
+    font-size: 1rem;
+  }
+
+  .header-cta {
+    margin-left: auto;
+    gap: 0.5rem;
   }
 
   .btn-primary {
-    padding: 0.6rem 1rem;
+    padding: 0.6rem 1.1rem;
     font-size: 0.85rem;
+  }
+
+  .menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ececec;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #202225;
+    cursor: pointer;
+  }
+
+  .menu-icon,
+  .menu-icon::before,
+  .menu-icon::after {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  .menu-icon {
+    position: relative;
+  }
+
+  .menu-icon::before,
+  .menu-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .menu-icon::before {
+    top: -6px;
+  }
+
+  .menu-icon::after {
+    top: 6px;
+  }
+
+  .site-header.is-open .menu-icon {
+    background: transparent;
+  }
+
+  .site-header.is-open .menu-icon::before {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .site-header.is-open .menu-icon::after {
+    transform: translateY(-6px) rotate(-45deg);
   }
 }
 </style>

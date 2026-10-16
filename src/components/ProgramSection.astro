@@ -10,7 +10,7 @@ const ticketIsExternal = ticketUrl.startsWith('http');
 
 <section class="program-stage" id="program" aria-labelledby="program-title">
   <div class="program-shell container">
-    <h2 id="program-title">One Day To Build Real<br />Flow And Value</h2>
+    <h2 id="program-title">One Day To Build Real<br class="title-break" /> Flow And Value</h2>
 
     <div class="program-grid">
       {days.map((day, index) => (
@@ -167,6 +167,12 @@ const ticketIsExternal = ticketUrl.startsWith('http');
   line-height: 1.08;
   letter-spacing: -0.01em;
   text-wrap: balance;
+}
+
+@media (max-width: 700px) {
+  .title-break {
+    display: none;
+  }
 }
 
 .program-date {
