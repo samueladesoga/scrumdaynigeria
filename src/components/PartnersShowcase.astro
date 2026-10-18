@@ -21,7 +21,7 @@ const partners = (await getCollection('partners')).sort((a, b) => a.data.order -
             title={partner.data.name}
             style={partner.data.background ? `background:${partner.data.background}` : undefined}
           >
-            <Image class="partner-logo" src={partner.data.logo} alt={partner.data.name} width={320} height={120} />
+            <Image class="partner-logo" src={partner.data.logo} alt={partner.data.name} width={320} />
           </a>
         ))}
       </div>
