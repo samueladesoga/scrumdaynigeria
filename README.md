@@ -84,3 +84,17 @@ extra config needed.
   real logo is already wired up (`public/brand-icon.png`, `public/brand-lockup.png`, favicon).
 - The footer newsletter signup form has no backend wired up (matching the reference template) —
   connect it to a real email service (Mailchimp, ConvertKit, etc.) before relying on it.
+
+## Ticket payments (Paystack)
+
+Attendee-count tickets are paid through Paystack's hosted checkout. The browser sends the tier,
+attendee count, name and email to `src/pages/api/checkout.ts`, which prices the order from
+`src/content/ticket-tiers.yaml` (via `src/lib/ticket-pricing.ts`) and asks Paystack for a
+transaction of exactly that amount. Paystack returns the buyer to `/checkout/complete`, which
+verifies the payment before confirming it. Each transaction in the Paystack dashboard shows the
+buyer's name, ticket, attendee count and per-person price.
+
+These two routes run as Vercel functions (`@astrojs/vercel` adapter); every other page is still
+prerendered. Set `PAYSTACK_SECRET_KEY` in Vercel → Settings → Environment Variables
+(`sk_test_…` for Preview, `sk_live_…` for Production); locally, put it in `.env.local`.
+Without it, checkout politely reports that payment is unavailable.

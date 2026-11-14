@@ -149,19 +149,19 @@ const programDays = defineCollection({
 // `pendingLabel` and is disabled, so nobody lands on a broken page).
 const actionUrl = z.union([z.string().url(), z.literal('')]).default('');
 
-// One price band of an attendee-count ticket: `min`–`max` attendees pay `price` per person via
-// their own payment page. An optional early-bird price/page applies up to and including `until`.
+// One price band of an attendee-count ticket: `min`–`max` attendees pay `price` per person.
+// Payment goes through /api/checkout, which charges Paystack the exact total for the chosen
+// quantity — no per-band payment pages. An optional early-bird price applies up to and
+// including `until`.
 const priceBand = z.object({
   label: z.string(), // e.g. "Individual", "Group booking"
   min: z.number().int().min(1),
   max: z.number().int().min(1),
   price: z.number().positive(), // per person, in `currency` units (not kobo)
-  url: actionUrl,
   earlyBird: z
     .object({
       price: z.number().positive(),
       until: z.coerce.date(), // last day of early-bird pricing (Lagos time)
-      url: actionUrl,
     })
     .optional(),
 });

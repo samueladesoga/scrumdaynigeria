@@ -1,0 +1,220 @@
+---
+// Where Paystack sends the buyer after checkout (`callback_url` in /api/checkout). Rendered on
+// demand so it can ask Paystack whether the payment really went through before saying so.
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import { getEntry } from 'astro:content';
+import { PAYSTACK_SECRET_KEY } from 'astro:env/server';
+
+export const prerender = false;
+
+const site = await getEntry('site', 'config');
+const { nav, ticketUrl, contactEmail, eventName, displayDate, venueName } = site!.data;
+
+type Result =
+  | { state: 'success'; email: string; amount: string; attendees: string | null; reference: string }
+  | { state: 'pending' | 'failed' | 'unknown'; reference: string | null };
+
+const reference = Astro.url.searchParams.get('reference') ?? Astro.url.searchParams.get('trxref');
+let result: Result = { state: 'unknown', reference };
+
+if (reference && PAYSTACK_SECRET_KEY) {
+  try {
+    const res = await fetch(`https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`, {
+      headers: { Authorization: `Bearer ${PAYSTACK_SECRET_KEY}` },
+    });
+    const payload = await res.json();
+    const tx = payload?.data;
+    if (res.ok && tx?.status === 'success') {
+      const amount = new Intl.NumberFormat('en-NG', {
+        style: 'currency',
+        currency: tx.currency,
+        maximumFractionDigits: 0,
+      }).format(tx.amount / 100);
+      result = {
+        state: 'success',
+        email: tx.customer?.email,
+        amount,
+        attendees: tx.metadata?.quantity != null ? String(tx.metadata.quantity) : null,
+        reference,
+      };
+    } else if (['abandoned', 'ongoing', 'pending', 'processing', 'queued'].includes(tx?.status)) {
+      result = { state: 'pending', reference };
+    } else if (tx?.status) {
+      result = { state: 'failed', reference };
+    }
+  } catch (err) {
+    console.error('[checkout/complete] verify failed', err);
+  }
+}
+
+// Nobody should bookmark a receipt page with a stale status.
+Astro.response.headers.set('Cache-Control', 'no-store');
+---
+
+<Layout title={result.state === 'success' ? "You're booked" : 'Payment status'}>
+  <Header nav={nav} ticketUrl={ticketUrl} />
+
+  <main class="checkout">
+    <div class="container checkout-inner">
+      {result.state === 'success' && (
+        <>
+          <p class="eyebrow">Payment confirmed</p>
+          <h1>You're coming to {eventName}!</h1>
+          <p class="lead">
+            We've received {result.amount}
+            {result.attendees && <> for {result.attendees} {result.attendees === '1' ? 'attendee' : 'attendees'}</>}.
+            A receipt is on its way to <strong>{result.email}</strong>. See you on {displayDate} at {venueName}.
+          </p>
+          {result.attendees && result.attendees !== '1' && (
+            <p class="lead">
+              We'll be in touch at that address to collect the names of everyone in your group.
+            </p>
+          )}
+        </>
+      )}
+
+      {result.state === 'pending' && (
+        <>
+          <p class="eyebrow">Payment in progress</p>
+          <h1>We're still waiting on your bank</h1>
+          <p class="lead">
+            Your payment hasn't completed yet. If you finished paying, give it a minute and refresh this page; you'll
+            also get an email receipt once it clears.
+          </p>
+        </>
+      )}
+
+      {result.state === 'failed' && (
+        <>
+          <p class="eyebrow">Payment not completed</p>
+          <h1>Your payment didn't go through</h1>
+          <p class="lead">No money has been taken for this attempt. You can try again with the same or another card.</p>
+        </>
+      )}
+
+      {result.state === 'unknown' && (
+        <>
+          <p class="eyebrow">Payment status</p>
+          <h1>We couldn't check this payment</h1>
+          <p class="lead">
+            If you've paid, look out for a receipt from Paystack in your inbox. Otherwise, you can start again below.
+          </p>
+        </>
+      )}
+
+      <div class="actions">
+        {result.state === 'success' ? (
+          <>
+            <a href="/schedule" class="action action-primary">View the schedule</a>
+            <a href="/" class="action action-secondary">Back to homepage</a>
+          </>
+        ) : (
+          <>
+            <a href="/#tickets" class="action action-primary">Back to tickets</a>
+            <a href="/" class="action action-secondary">Homepage</a>
+          </>
+        )}
+      </div>
+
+      <p class="help">
+        Questions about your booking? Email <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+        {result.reference && <> and quote reference <code>{result.reference}</code></>}.
+      </p>
+    </div>
+  </main>
+</Layout>
+
+<style>
+.checkout {
+  background: #ffffff;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+}
+
+.checkout-inner {
+  width: min(760px, 92%);
+  padding: 4.5rem 0;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--brand-primary, #f15b30);
+}
+
+h1 {
+  margin: 0.5rem 0 0;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: #1f2429;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+}
+
+.lead {
+  margin: 1.1rem 0 0;
+  color: #4b5358;
+  font-size: 1.08rem;
+  max-width: 52ch;
+}
+
+.lead strong {
+  color: #1f2429;
+}
+
+.actions {
+  margin-top: 1.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.3rem;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.action-primary {
+  background: var(--brand-primary, #f15b30);
+  color: #ffffff;
+}
+
+.action-primary:hover {
+  background: var(--brand-primary-dark, #d8481f);
+}
+
+.action-secondary {
+  border: 1px solid var(--brand-teal, #0e494f);
+  color: var(--brand-teal, #0e494f);
+}
+
+.action-secondary:hover {
+  background: var(--brand-teal, #0e494f);
+  color: #ffffff;
+}
+
+.help {
+  margin: 2rem 0 0;
+  color: #6a7278;
+  overflow-wrap: anywhere;
+}
+
+.help a {
+  color: var(--brand-teal, #0e494f);
+  font-weight: 600;
+}
+
+.help code {
+  font-size: 0.9em;
+}
+</style>
