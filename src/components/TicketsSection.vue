@@ -91,19 +91,39 @@
                   <strong>{{ money(card, quoteFor(card).price * countFor(card)) }}</strong>
                 </div>
 
-                <a
-                  v-if="quoteFor(card).url"
-                  class="card-cta"
-                  :href="quoteFor(card).url"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >{{ card.ctaLabel }} &rarr;</a>
-                <span v-else class="card-cta is-pending" aria-disabled="true">{{ card.pendingLabel }}</span>
+                <form class="buyer-form" novalidate @submit.prevent="checkout(card)">
+                  <div class="buyer-field">
+                    <label :for="`buyer-name-${card.id}`">Full name</label>
+                    <input
+                      :id="`buyer-name-${card.id}`"
+                      v-model="buyer.name"
+                      type="text"
+                      autocomplete="name"
+                      required
+                      minlength="2"
+                    />
+                  </div>
+                  <div class="buyer-field">
+                    <label :for="`buyer-email-${card.id}`">Email for your receipt</label>
+                    <input
+                      :id="`buyer-email-${card.id}`"
+                      v-model="buyer.email"
+                      type="email"
+                      autocomplete="email"
+                      inputmode="email"
+                      required
+                    />
+                  </div>
 
-                <p v-if="countFor(card) > 1" class="cta-hint cta-hint-qty">
-                  <span aria-hidden="true">&#9432;</span>
-                  On the Paystack page, set the quantity to <strong>{{ countFor(card) }}</strong> before you pay.
-                </p>
+                  <button class="card-cta" type="submit" :disabled="submitting">
+                    <template v-if="submitting">Opening secure checkout&hellip;</template>
+                    <template v-else>
+                      Pay {{ money(card, quoteFor(card).price * countFor(card)) }} &rarr;
+                    </template>
+                  </button>
+                  <p v-if="checkoutError" class="cta-error" role="alert">{{ checkoutError }}</p>
+                  <p v-else class="cta-hint">Secure payment by Paystack — card, bank transfer or USSD.</p>
+                </form>
               </template>
 
               <template v-else>
@@ -233,9 +253,9 @@ const setCount = (card, value) => {
 const priceFor = (band) => {
   const eb = band.earlyBird;
   if (eb && now.value < eb.endsAt) {
-    return { price: eb.price, oldPrice: band.price, url: eb.url, earlyBirdEndsAt: eb.endsAt };
+    return { price: eb.price, oldPrice: band.price, earlyBirdEndsAt: eb.endsAt };
   }
-  return { price: band.price, oldPrice: null, url: band.url, earlyBirdEndsAt: null };
+  return { price: band.price, oldPrice: null, earlyBirdEndsAt: null };
 };
 
 const endDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Lagos' });
@@ -268,6 +288,46 @@ const money = (card, amount) => {
   }
   return formatters.get(card.currency).format(amount);
 };
+
+// ---- Checkout --------------------------------------------------------------
+// The server recalculates the price from the content files; we only send who and how many.
+
+const buyer = reactive({ name: '', email: '' });
+const submitting = ref(false);
+const checkoutError = ref('');
+
+const checkout = async (card) => {
+  checkoutError.value = '';
+  const name = buyer.name.trim();
+  const email = buyer.email.trim();
+  if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    checkoutError.value = 'Please enter your full name and a valid email address.';
+    return;
+  }
+
+  submitting.value = true;
+  try {
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tierId: card.id, quantity: countFor(card), name, email }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.url) throw new Error(data.error || 'We could not start the payment. Please try again.');
+    window.location.assign(data.url);
+  } catch (err) {
+    checkoutError.value = err.message || 'We could not start the payment. Please try again.';
+    submitting.value = false;
+  }
+};
+
+// Coming back via the browser's Back button from Paystack restores this page from the bfcache
+// with the button still saying "Opening secure checkout…".
+onMounted(() => {
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) submitting.value = false;
+  });
+});
 
 const quoteMailto = (card) => {
   const subject = `Group booking enquiry: ${maxCount(card)}+ attendees`;
@@ -670,8 +730,69 @@ const quoteMailto = (card) => {
   font-size: 0.85rem;
 }
 
-.cta-hint-qty strong {
+.buyer-form {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.buyer-field label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2e3539;
+}
+
+.buyer-field input {
+  margin-top: 0.35rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0 0.85rem;
+  border: 1px solid #cfd4d6;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 1rem;
   color: #1e2326;
+  background: #fff;
+}
+
+.buyer-field input:focus-visible {
+  outline: 2px solid var(--brand-primary, #f15b30);
+  outline-offset: 2px;
+}
+
+button.card-cta {
+  margin-top: 0.3rem;
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+
+button.card-cta:hover:not(:disabled) {
+  background: var(--brand-primary-dark, #d8481f);
+}
+
+button.card-cta:disabled {
+  opacity: 0.75;
+  cursor: progress;
+}
+
+button.card-cta:focus-visible {
+  outline: 2px solid #082f33;
+  outline-offset: 3px;
+}
+
+.buyer-form .cta-hint {
+  margin-top: 0;
+}
+
+.cta-error {
+  margin: 0;
+  text-align: center;
+  color: #b42318;
+  font-size: 0.88rem;
+  font-weight: 600;
 }
 
 .band-side {

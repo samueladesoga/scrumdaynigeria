@@ -2,11 +2,12 @@
 # to show them as tabs; with only one category, the tab bar hides itself.
 #
 # A tier with `bands` gets an attendee-count picker: each band covers `min`–`max` attendees at a
-# per-person `price` and has its own payment page (`url`). Anyone above the last band's `max` is
-# asked to contact us for pricing. Bands must run from 1 upwards with no gaps (the build checks).
+# per-person `price`. Checkout charges Paystack price × attendees directly (see
+# src/pages/api/checkout.ts), so changing a price here is all it takes. Anyone above the last
+# band's `max` is asked to contact us for pricing. Bands must run from 1 upwards with no gaps
+# (the build checks).
 #
-# Any `url: ""` shows a disabled "Available soon" button — paste the real link in to switch it on.
-# Group payment pages need Paystack's quantity field enabled (ideally limited to the band's range).
+# Static cards (no `bands`) link to `url`; `url: ""` shows a disabled "Available soon" button.
 
 - id: standard
   order: 1
@@ -22,26 +23,21 @@
       min: 1
       max: 1
       price: 45000
-      url: "https://paystack.shop/pay/sdn2027-individual"
       earlyBird:
         price: 38000
         until: 2026-12-31 # last day of early bird; switches to the regular price after this
-        url: "https://paystack.shop/pay/sdn2027-early-bird"
     - label: "Group booking"
       min: 2
       max: 5
       price: 35000
-      url: "https://paystack.shop/pay/sdn2027-two-five"
     - label: "Group booking"
       min: 6
       max: 10
       price: 33000
-      url: "https://paystack.shop/pay/sdn2027-six-ten"
     - label: "Group booking"
       min: 11
       max: 20
       price: 30000
-      url: "https://paystack.shop/pay/sdn2027-eleven-twenty"
 
 - id: hackathon
   order: 2
